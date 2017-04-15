@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next mist use-motion" lang="zh-Hans">
+<html class="theme-next muse use-motion" lang="zh-Hans">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -94,7 +94,7 @@
 <meta property="og:url" content="http://yoursite.com/2017/04/15/面向实习面试的复习之Java/index.html">
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="Java C++ 区别 Java解释型：程序经编译器变成成字节码，由JVM解释执行；C++编译型：源代码经编译与链接后生成可执行二进制代码。 Java纯面向对象：除基本类型（int,float），所有类型都是类；C++兼具面向过程与面向对象。 Java无指针概念，程序更安全，避免溢出 Java不支持多重继承，引入了接口概念；C++多重继承。 Java提供了垃圾回收器，调用对象的finalize方法">
-<meta property="og:updated_time" content="2017-04-15T10:42:24.450Z">
+<meta property="og:updated_time" content="2017-04-15T14:16:01.649Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="面向实习面试的复习之Java">
 <meta name="twitter:description" content="Java C++ 区别 Java解释型：程序经编译器变成成字节码，由JVM解释执行；C++编译型：源代码经编译与链接后生成可执行二进制代码。 Java纯面向对象：除基本类型（int,float），所有类型都是类；C++兼具面向过程与面向对象。 Java无指针概念，程序更安全，避免溢出 Java不支持多重继承，引入了接口概念；C++多重继承。 Java提供了垃圾回收器，调用对象的finalize方法">
@@ -105,7 +105,7 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
-    scheme: 'Mist',
+    scheme: 'Muse',
     sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
     fancybox: true,
     motion: true,
@@ -345,37 +345,63 @@
 <h2 id="Java作用域"><a href="#Java作用域" class="headerlink" title="Java作用域"></a>Java作用域</h2><ul>
 <li>成员变量：类被实例化，成员变量在内存分配空间并初始化，直至实例化对象生命周期结束</li>
 <li>静态变量（static）：类被加载时</li>
-<li>局部变量：花括号内<table><br><tr><th></th><th>当前类</th><th>本包</th><th>子类</th><th>其他包</th></tr><br><tr><td>public</td><td>√</td><td>√</td><td>√</td><td>√</td></tr><br><tr><td>protected</td><td>√</td><td>√</td><td>√</td><td></td></tr><br><tr><td>default</td><td>√</td><td>√</td><td></td><td></td></tr><br><tr><td>default</td><td>√</td><td></td><td></td><td></td></tr><br></table>
-
-</li>
+<li>局部变量：花括号内</li>
 </ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:left"></th>
+<th style="text-align:left">当前类</th>
+<th style="text-align:left">本包</th>
+<th style="text-align:left">子类</th>
+<th style="text-align:left">其他包</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">public</td>
+<td style="text-align:left">√</td>
+<td style="text-align:left">√</td>
+<td style="text-align:left">√</td>
+<td style="text-align:left">√</td>
+</tr>
+<tr>
+<td style="text-align:left">protected</td>
+<td style="text-align:left">√</td>
+<td style="text-align:left">√</td>
+<td style="text-align:left">√</td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">default</td>
+<td style="text-align:left">√</td>
+<td style="text-align:left">√</td>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">private</td>
+<td style="text-align:left">√</td>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
+</tr>
+</tbody>
+</table>
 <h2 id="构造函数"><a href="#构造函数" class="headerlink" title="构造函数"></a>构造函数</h2><p>没有编写构造器时，编译器提供一个无参数构造函数（默认值，数值类型-0，布尔-false，对象-null）</p>
 <p>子类通过super显式调用父类的构造器</p>
 <p>父类没有提供无参数的构造函数时，子类构造器函数必须显式调用父类的构造函数</p>
 <h2 id="clone"><a href="#clone" class="headerlink" title="clone"></a>clone</h2><p>除基本数据按值传递，对象在函数调用与=赋值时采用引用传递</p>
-<p>从已有对象A创建一个相同状态B，且对B修改不影响A，使用clone()</p>
-<pre><code>class Obj implements Cloneable {
-     public Obj clone() throws CloneNotSupportedException {
-          return (Obj)super.clone();
-     }
-}
-</code></pre><p>深复制：复制后的对象引用指向新的对象</p>
+<p>从已有对象A创建一个相同状态B，且对B修改不影响A，使用clone()<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">class Obj implements Cloneable &#123;</div><div class="line">    public Obj clone() throws CloneNotSupportedException &#123;</div><div class="line">    	return (Obj)super.clone();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>深复制：复制后的对象引用指向新的对象</p>
 <p>浅复制：复制后的对象引用仍然指向原来的对象</p>
 <h2 id="反射机制"><a href="#反射机制" class="headerlink" title="反射机制"></a>反射机制</h2><ul>
 <li>得到一个对象所属的类</li>
 <li>获得一个类的所有成员变量和方法</li>
 <li>运行时创建对象</li>
-<li><p>运行时调用对象的方法</p>
-<pre><code>class Base {……}
-class Sub extends Base {……}
-
-try {
-    Class c = Class.forName(&quot;Sub&quot;);
-     Base b = (Base)c.newInstance();
-     b.f();    
-} catch (Exception e){}
-</code></pre></li>
+<li>运行时调用对象的方法</li>
 </ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">class Base &#123;……&#125;</div><div class="line">class Sub extends Base &#123;……&#125;</div><div class="line"></div><div class="line">try &#123;</div><div class="line">    Class c = Class.forName(&quot;Sub&quot;);</div><div class="line">    Base b = (Base)c.newInstance();</div><div class="line">    b.f();	</div><div class="line">&#125; catch (Exception e)&#123;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <h2 id="面向对象"><a href="#面向对象" class="headerlink" title="面向对象"></a>面向对象</h2><p>继承、封装、多态</p>
 <h2 id="多态实现机制"><a href="#多态实现机制" class="headerlink" title="多态实现机制"></a>多态实现机制</h2><ul>
 <li>方法重载：同一个类中多个同名方法，不同参数（不同参数个数，不同参数类型，不同参数顺序），编译时多态</li>
@@ -405,8 +431,57 @@ try {
 <li>static 代码块：静态代码块在类被加载时被被调用</li>
 </ul>
 <h2 id="volatile"><a href="#volatile" class="headerlink" title="volatile"></a>volatile</h2><p>volatile 修饰被不同线程访问和修改的变量，每次使用时从内存提取，而不利用缓存；不能保证原子性</p>
-<h2 id="基本数据类型"><a href="#基本数据类型" class="headerlink" title="基本数据类型"></a>基本数据类型</h2><table><br><tr><td>int</td><td>4 byte / 32 bit</td><td>Integer</td></tr><br><tr><td>short</td><td>2 byte / 16 bit</td><td>Short</td></tr><br><tr><td>long</td><td>8 byte / 64 bit</td><td>Long</td></tr><br><tr><td>byte</td><td>1 byte / 8 bit</td><td>Byte</td></tr><br><tr><td>float</td><td>4 byte / 32 bit</td><td>Float</td></tr><br><tr><td>double</td><td>8 byte / 64 bit</td><td>Double</td></tr><br><tr><td>char</td><td>2 byte / 16 bit</td><td>Character</td></tr><br><tr><td>boolean</td><td>1 byte / 8 bit</td><td>Boolean</td></tr><br></table>
-
+<h2 id="基本数据类型"><a href="#基本数据类型" class="headerlink" title="基本数据类型"></a>基本数据类型</h2><table>
+<thead>
+<tr>
+<th style="text-align:left">类型</th>
+<th style="text-align:left">位长</th>
+<th style="text-align:left">包装类</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">int</td>
+<td style="text-align:left">4 byte / 32 bit</td>
+<td style="text-align:left">Integer</td>
+</tr>
+<tr>
+<td style="text-align:left">short</td>
+<td style="text-align:left">2 byte / 16 bit</td>
+<td style="text-align:left">Short</td>
+</tr>
+<tr>
+<td style="text-align:left">long</td>
+<td style="text-align:left">8 byte / 64 bit</td>
+<td style="text-align:left">Long</td>
+</tr>
+<tr>
+<td style="text-align:left">byte</td>
+<td style="text-align:left">1 byte / 8 bit</td>
+<td style="text-align:left">Byte</td>
+</tr>
+<tr>
+<td style="text-align:left">float</td>
+<td style="text-align:left">4 byte / 32 bit</td>
+<td style="text-align:left">Float</td>
+</tr>
+<tr>
+<td style="text-align:left">double</td>
+<td style="text-align:left">8 byte / 64 bit</td>
+<td style="text-align:left">Double</td>
+</tr>
+<tr>
+<td style="text-align:left">char</td>
+<td style="text-align:left">2 byte / 16 bit</td>
+<td style="text-align:left">Character</td>
+</tr>
+<tr>
+<td style="text-align:left">boolean</td>
+<td style="text-align:left">1 byte / 8 bit</td>
+<td style="text-align:left">Boolean</td>
+</tr>
+</tbody>
+</table>
 <h2 id="不可变类"><a href="#不可变类" class="headerlink" title="不可变类"></a>不可变类</h2><ul>
 <li>基本类型的包装类是不可变类；</li>
 <li>String是不可变类</li>
@@ -462,10 +537,9 @@ String s2 = new String(&quot;abc&quot;);
 </ul>
 <h2 id="Collection-Collections"><a href="#Collection-Collections" class="headerlink" title="Collection Collections"></a>Collection Collections</h2><ul>
 <li>Collection是一个集合接口</li>
-<li><p>Collections是针对集合类的一个包装类</p>
-<p>  List<integer> list = new LinkedList<intger>();<br>  Collections.sort(list);</intger></integer></p>
-</li>
+<li>Collections是针对集合类的一个包装类</li>
 </ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">List&lt;Integer&gt; list = new LinkedList&lt;Intger&gt;();</div><div class="line">Collections.sort(list);</div></pre></td></tr></table></figure>
 
       
     </div>
@@ -659,7 +733,7 @@ String s2 = new String(&quot;abc&quot;);
 <div class="theme-info">
   主题 -
   <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Mist
+    NexT.Muse
   </a>
 </div>
 

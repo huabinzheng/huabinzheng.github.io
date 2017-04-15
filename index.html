@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next mist use-motion" lang="zh-Hans">
+<html class="theme-next muse use-motion" lang="zh-Hans">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -103,7 +103,7 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
-    scheme: 'Mist',
+    scheme: 'Muse',
     sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
     fancybox: true,
     motion: true,
@@ -350,37 +350,63 @@
 <h2 id="Java作用域"><a href="#Java作用域" class="headerlink" title="Java作用域"></a>Java作用域</h2><ul>
 <li>成员变量：类被实例化，成员变量在内存分配空间并初始化，直至实例化对象生命周期结束</li>
 <li>静态变量（static）：类被加载时</li>
-<li>局部变量：花括号内<table><br><tr><th></th><th>当前类</th><th>本包</th><th>子类</th><th>其他包</th></tr><br><tr><td>public</td><td>√</td><td>√</td><td>√</td><td>√</td></tr><br><tr><td>protected</td><td>√</td><td>√</td><td>√</td><td></td></tr><br><tr><td>default</td><td>√</td><td>√</td><td></td><td></td></tr><br><tr><td>default</td><td>√</td><td></td><td></td><td></td></tr><br></table>
-
-</li>
+<li>局部变量：花括号内</li>
 </ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:left"></th>
+<th style="text-align:left">当前类</th>
+<th style="text-align:left">本包</th>
+<th style="text-align:left">子类</th>
+<th style="text-align:left">其他包</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">public</td>
+<td style="text-align:left">√</td>
+<td style="text-align:left">√</td>
+<td style="text-align:left">√</td>
+<td style="text-align:left">√</td>
+</tr>
+<tr>
+<td style="text-align:left">protected</td>
+<td style="text-align:left">√</td>
+<td style="text-align:left">√</td>
+<td style="text-align:left">√</td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">default</td>
+<td style="text-align:left">√</td>
+<td style="text-align:left">√</td>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">private</td>
+<td style="text-align:left">√</td>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
+</tr>
+</tbody>
+</table>
 <h2 id="构造函数"><a href="#构造函数" class="headerlink" title="构造函数"></a>构造函数</h2><p>没有编写构造器时，编译器提供一个无参数构造函数（默认值，数值类型-0，布尔-false，对象-null）</p>
 <p>子类通过super显式调用父类的构造器</p>
 <p>父类没有提供无参数的构造函数时，子类构造器函数必须显式调用父类的构造函数</p>
 <h2 id="clone"><a href="#clone" class="headerlink" title="clone"></a>clone</h2><p>除基本数据按值传递，对象在函数调用与=赋值时采用引用传递</p>
-<p>从已有对象A创建一个相同状态B，且对B修改不影响A，使用clone()</p>
-<pre><code>class Obj implements Cloneable {
-     public Obj clone() throws CloneNotSupportedException {
-          return (Obj)super.clone();
-     }
-}
-</code></pre><p>深复制：复制后的对象引用指向新的对象</p>
+<p>从已有对象A创建一个相同状态B，且对B修改不影响A，使用clone()<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">class Obj implements Cloneable &#123;</div><div class="line">    public Obj clone() throws CloneNotSupportedException &#123;</div><div class="line">    	return (Obj)super.clone();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>深复制：复制后的对象引用指向新的对象</p>
 <p>浅复制：复制后的对象引用仍然指向原来的对象</p>
 <h2 id="反射机制"><a href="#反射机制" class="headerlink" title="反射机制"></a>反射机制</h2><ul>
 <li>得到一个对象所属的类</li>
 <li>获得一个类的所有成员变量和方法</li>
 <li>运行时创建对象</li>
-<li><p>运行时调用对象的方法</p>
-<pre><code>class Base {……}
-class Sub extends Base {……}
-
-try {
-    Class c = Class.forName(&quot;Sub&quot;);
-     Base b = (Base)c.newInstance();
-     b.f();    
-} catch (Exception e){}
-</code></pre></li>
+<li>运行时调用对象的方法</li>
 </ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">class Base &#123;……&#125;</div><div class="line">class Sub extends Base &#123;……&#125;</div><div class="line"></div><div class="line">try &#123;</div><div class="line">    Class c = Class.forName(&quot;Sub&quot;);</div><div class="line">    Base b = (Base)c.newInstance();</div><div class="line">    b.f();	</div><div class="line">&#125; catch (Exception e)&#123;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <h2 id="面向对象"><a href="#面向对象" class="headerlink" title="面向对象"></a>面向对象</h2><p>继承、封装、多态</p>
 <h2 id="多态实现机制"><a href="#多态实现机制" class="headerlink" title="多态实现机制"></a>多态实现机制</h2><ul>
 <li>方法重载：同一个类中多个同名方法，不同参数（不同参数个数，不同参数类型，不同参数顺序），编译时多态</li>
@@ -410,8 +436,57 @@ try {
 <li>static 代码块：静态代码块在类被加载时被被调用</li>
 </ul>
 <h2 id="volatile"><a href="#volatile" class="headerlink" title="volatile"></a>volatile</h2><p>volatile 修饰被不同线程访问和修改的变量，每次使用时从内存提取，而不利用缓存；不能保证原子性</p>
-<h2 id="基本数据类型"><a href="#基本数据类型" class="headerlink" title="基本数据类型"></a>基本数据类型</h2><table><br><tr><td>int</td><td>4 byte / 32 bit</td><td>Integer</td></tr><br><tr><td>short</td><td>2 byte / 16 bit</td><td>Short</td></tr><br><tr><td>long</td><td>8 byte / 64 bit</td><td>Long</td></tr><br><tr><td>byte</td><td>1 byte / 8 bit</td><td>Byte</td></tr><br><tr><td>float</td><td>4 byte / 32 bit</td><td>Float</td></tr><br><tr><td>double</td><td>8 byte / 64 bit</td><td>Double</td></tr><br><tr><td>char</td><td>2 byte / 16 bit</td><td>Character</td></tr><br><tr><td>boolean</td><td>1 byte / 8 bit</td><td>Boolean</td></tr><br></table>
-
+<h2 id="基本数据类型"><a href="#基本数据类型" class="headerlink" title="基本数据类型"></a>基本数据类型</h2><table>
+<thead>
+<tr>
+<th style="text-align:left">类型</th>
+<th style="text-align:left">位长</th>
+<th style="text-align:left">包装类</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">int</td>
+<td style="text-align:left">4 byte / 32 bit</td>
+<td style="text-align:left">Integer</td>
+</tr>
+<tr>
+<td style="text-align:left">short</td>
+<td style="text-align:left">2 byte / 16 bit</td>
+<td style="text-align:left">Short</td>
+</tr>
+<tr>
+<td style="text-align:left">long</td>
+<td style="text-align:left">8 byte / 64 bit</td>
+<td style="text-align:left">Long</td>
+</tr>
+<tr>
+<td style="text-align:left">byte</td>
+<td style="text-align:left">1 byte / 8 bit</td>
+<td style="text-align:left">Byte</td>
+</tr>
+<tr>
+<td style="text-align:left">float</td>
+<td style="text-align:left">4 byte / 32 bit</td>
+<td style="text-align:left">Float</td>
+</tr>
+<tr>
+<td style="text-align:left">double</td>
+<td style="text-align:left">8 byte / 64 bit</td>
+<td style="text-align:left">Double</td>
+</tr>
+<tr>
+<td style="text-align:left">char</td>
+<td style="text-align:left">2 byte / 16 bit</td>
+<td style="text-align:left">Character</td>
+</tr>
+<tr>
+<td style="text-align:left">boolean</td>
+<td style="text-align:left">1 byte / 8 bit</td>
+<td style="text-align:left">Boolean</td>
+</tr>
+</tbody>
+</table>
 <h2 id="不可变类"><a href="#不可变类" class="headerlink" title="不可变类"></a>不可变类</h2><ul>
 <li>基本类型的包装类是不可变类；</li>
 <li>String是不可变类</li>
@@ -467,10 +542,9 @@ String s2 = new String(&quot;abc&quot;);
 </ul>
 <h2 id="Collection-Collections"><a href="#Collection-Collections" class="headerlink" title="Collection Collections"></a>Collection Collections</h2><ul>
 <li>Collection是一个集合接口</li>
-<li><p>Collections是针对集合类的一个包装类</p>
-<p>  List<integer> list = new LinkedList<intger>();<br>  Collections.sort(list);</intger></integer></p>
-</li>
+<li>Collections是针对集合类的一个包装类</li>
 </ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">List&lt;Integer&gt; list = new LinkedList&lt;Intger&gt;();</div><div class="line">Collections.sort(list);</div></pre></td></tr></table></figure>
 
           
         
@@ -593,78 +667,20 @@ String s2 = new String(&quot;abc&quot;);
           
             <p>最近一直在寻找暑假的实习，照道理来说排序应该是一个高频的面试问题，不过至今也只遇到了描述一下快速排序思想的问题，这里参考了大二算法课上老师所讲的算法以及《算法》（第4版）的内容，使用C++做了练习。<br>如果有错误的话，也欢迎告诉我。（不过博客还没有评价系统..）</p>
 <h2 id="冒泡"><a href="#冒泡" class="headerlink" title="冒泡"></a>冒泡</h2><p>时间复杂度 O(n<sup>2</sup>)</p>
-<p><img src="https://upload.wikimedia.org/wikipedia/commons/3/37/Bubble_sort_animation.gif" alt=""></p>
-<pre><code>void bubble_sort(vector&lt;int&gt; &amp;numbers) {
-    for (int i = 0; i &lt; numbers.size(); i++) 
-        for (int j = i + 1; j &lt; numbers.size(); j++) 
-            if (numbers[i] &lt; numbers[j]) 
-                swap(number[i], numbers[j]);
-}
-</code></pre><p><br>  </p>
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/3/37/Bubble_sort_animation.gif" alt=""><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">void bubble_sort(vector&lt;int&gt; &amp;numbers) &#123;</div><div class="line">    for (int i = 0; i &lt; numbers.size(); i++) </div><div class="line">        for (int j = i + 1; j &lt; numbers.size(); j++) </div><div class="line">            if (numbers[i] &lt; numbers[j]) </div><div class="line">                swap(number[i], numbers[j]);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><br>  </p>
 <h2 id="选择"><a href="#选择" class="headerlink" title="选择"></a>选择</h2><p>时间复杂度 O(n<sup>2</sup>)</p>
-<p><img src="https://upload.wikimedia.org/wikipedia/commons/b/b0/Selection_sort_animation.gif" alt=""></p>
-<pre><code>void choose_sort(vector&lt;int&gt; &amp;numbers) {
-    for (int i = 0; i &lt; numbers.size(); i++) {
-        int min = i;
-        for (int j = i + 1; j &lt; numbers.size(); j++) 
-            if (numbers[min] &gt; numbers[j]) min = j;       
-        swap(numbers[i], numbers[min]);
-    }
-}
-</code></pre><p><br></p>
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/b/b0/Selection_sort_animation.gif" alt=""><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">void choose_sort(vector&lt;int&gt; &amp;numbers) &#123;</div><div class="line">	for (int i = 0; i &lt; numbers.size(); i++) &#123;</div><div class="line">		int min = i;</div><div class="line">		for (int j = i + 1; j &lt; numbers.size(); j++) </div><div class="line">	    	if (numbers[min] &gt; numbers[j]) min = j;       </div><div class="line">	    swap(numbers[i], numbers[min]);</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><br></p>
 <h2 id="插入"><a href="#插入" class="headerlink" title="插入"></a>插入</h2><p>时间复杂度 O(n<sup>2</sup>)</p>
-<p><img src="https://upload.wikimedia.org/wikipedia/commons/2/25/Insertion_sort_animation.gif" alt=""></p>
-<pre><code>void insert_sort(vector&lt;int&gt; &amp;numbers) {
-    for (int i = 1; i &lt; numbers.size(); i++) {
-        for (int j = i; j &gt; 0 &amp;&amp; numbers[j] &lt; numbers[j - 1]; j--)
-            swap(numbers[j], numbers[j - 1]);
-    }
-}
-</code></pre><p><br></p>
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/2/25/Insertion_sort_animation.gif" alt=""><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">void insert_sort(vector&lt;int&gt; &amp;numbers) &#123;</div><div class="line">	for (int i = 1; i &lt; numbers.size(); i++) &#123;</div><div class="line">		for (int j = i; j &gt; 0 &amp;&amp; numbers[j] &lt; numbers[j - 1]; j--)</div><div class="line">	    	swap(numbers[j], numbers[j - 1]);</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><br></p>
 <h2 id="快排"><a href="#快排" class="headerlink" title="快排"></a>快排</h2><p>时间复杂度O(nlogn) 最坏状态 O(n<sup>2</sup>)</p>
-<p><img src="https://upload.wikimedia.org/wikipedia/commons/6/6a/Sorting_quicksort_anim.gif" alt=""></p>
-<pre><code>int partition(vector&lt;int&gt; &amp;numbers, int lo, int hi) {
-    int i = lo; int j = hi + 1;
-    int n = numbers[lo];
-    while (true) {
-        while (numbers[++i] &lt; n) if (i == hi) break;        
-        while (numbers[--j] &gt; n) if (j == lo) break;
-        if (i &gt;= j) break;
-        swap(numbers[i], numbers[j]);
-    }
-    swap(numbers[lo], numbers[j]);
-    return j;
-}
-
-void quick_sort(vector&lt;int&gt; &amp;numbers, int lo, int hi) {
-    if (lo &gt;= hi) return;
-    int j = partition(numbers, lo, hi);
-    quick_sort(numbers, lo, j - 1);
-    quick_sort(numbers, j + 1, hi);
-}
-</code></pre><p><br></p>
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/6/6a/Sorting_quicksort_anim.gif" alt=""><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">int partition(vector&lt;int&gt; &amp;numbers, int lo, int hi) &#123;</div><div class="line">	int i = lo; int j = hi + 1;</div><div class="line">	int n = numbers[lo];</div><div class="line">	while (true) &#123;</div><div class="line">		while (numbers[++i] &lt; n) if (i == hi) break;        </div><div class="line">		while (numbers[--j] &gt; n) if (j == lo) break;</div><div class="line">        if (i &gt;= j) break;</div><div class="line">        swap(numbers[i], numbers[j]);</div><div class="line">    &#125;</div><div class="line">    swap(numbers[lo], numbers[j]);</div><div class="line">    return j;</div><div class="line">&#125;</div><div class="line"></div><div class="line">void quick_sort(vector&lt;int&gt; &amp;numbers, int lo, int hi) &#123;</div><div class="line">    if (lo &gt;= hi) return;</div><div class="line">    int j = partition(numbers, lo, hi);</div><div class="line">    quick_sort(numbers, lo, j - 1);</div><div class="line">    quick_sort(numbers, j + 1, hi);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><br></p>
 <h2 id="归并"><a href="#归并" class="headerlink" title="归并"></a>归并</h2><p>时间复杂度O(nlogn)</p>
-<p><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Merge_sort_animation2.gif/220px-Merge_sort_animation2.gif" alt=""></p>
-<pre><code>int merge(vector&lt;int&gt; &amp;numbers, int lo, int mid, int hi) {
-    int i = lo; int j = mid + 1;
-    vector&lt;int&gt; copy;
-    copy = numbers;
-    for (int k = lo; k &lt;= hi; k++) {
-        if (i &gt; mid) numbers[k] = copy[j++];
-        else if (j &gt; hi) numbers[k] = copy[i++];
-        else if (copy[i] &lt; copy[j]) numbers[k] = copy[j++];
-        else numbers[k] = copy[i++];
-    }
-}
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Merge_sort_animation2.gif/220px-Merge_sort_animation2.gif" alt=""><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">int merge(vector&lt;int&gt; &amp;numbers, int lo, int mid, int hi) &#123;</div><div class="line">    int i = lo; int j = mid + 1;</div><div class="line">    vector&lt;int&gt; copy;</div><div class="line">    copy = numbers;</div><div class="line">    for (int k = lo; k &lt;= hi; k++) &#123;</div><div class="line">        if (i &gt; mid) numbers[k] = copy[j++];</div><div class="line">        else if (j &gt; hi) numbers[k] = copy[i++];</div><div class="line">        else if (copy[i] &lt; copy[j]) numbers[k] = copy[j++];</div><div class="line">        else numbers[k] = copy[i++];</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">void merge_sort(vector&lt;int&gt; &amp;numbers, int lo, int hi) &#123;</div><div class="line">    if (lo &gt;= hi) return;</div><div class="line">    int mid = lo + (hi - lo) / 2;</div><div class="line">    sort(numbers, lo, mid);</div><div class="line">    sort(numbers, mid + 1, hi);</div><div class="line">    merge(numbers, lo, mid, hi);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 
-void merge_sort(vector&lt;int&gt; &amp;numbers, int lo, int hi) {
-    if (lo &gt;= hi) return;
-    int mid = lo + (hi - lo) / 2;
-    sort(numbers, lo, mid);
-    sort(numbers, mid + 1, hi);
-    merge(numbers, lo, mid, hi);
-}
-</code></pre>
           
         
       
@@ -933,7 +949,7 @@ void merge_sort(vector&lt;int&gt; &amp;numbers, int lo, int hi) {
 <div class="theme-info">
   主题 -
   <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Mist
+    NexT.Muse
   </a>
 </div>
 
