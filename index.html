@@ -250,6 +250,177 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/20/Java新版本特性/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Edward">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Silent Majority">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/08/20/Java新版本特性/" itemprop="url">
+                  Java新版本特性
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-20T18:52:54+08:00">
+                2017-08-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>归纳一些值得在面试时回答的Java新特性的点</p>
+<h1 id="JDK-7"><a href="#JDK-7" class="headerlink" title="JDK 7"></a>JDK 7</h1><blockquote>
+<p><a href="http://www.oracle.com/technetwork/java/javase/jdk7-relnotes-418459.html" target="_blank" rel="external">http://www.oracle.com/technetwork/java/javase/jdk7-relnotes-418459.html</a></p>
+</blockquote>
+<h2 id="Strings-in-switch-Statements"><a href="#Strings-in-switch-Statements" class="headerlink" title="Strings in switch Statements"></a>Strings in switch Statements</h2><p>In the JDK 7 release, you can use a <code>String</code> object in the expression of a <code>switch</code> statement:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> String <span class="title">getTypeOfDayWithSwitchStatement</span><span class="params">(String dayOfWeekArg)</span> </span>&#123;</div><div class="line">     String typeOfDay;</div><div class="line">     <span class="keyword">switch</span> (dayOfWeekArg) &#123;</div><div class="line">         <span class="keyword">case</span> <span class="string">"Monday"</span>:</div><div class="line">             typeOfDay = <span class="string">"Start of work week"</span>;</div><div class="line">             <span class="keyword">break</span>;</div><div class="line">         <span class="keyword">case</span> <span class="string">"Tuesday"</span>:</div><div class="line">         <span class="keyword">case</span> <span class="string">"Wednesday"</span>:</div><div class="line">         <span class="keyword">case</span> <span class="string">"Thursday"</span>:</div><div class="line">             typeOfDay = <span class="string">"Midweek"</span>;</div><div class="line">             <span class="keyword">break</span>;</div><div class="line">         <span class="keyword">case</span> <span class="string">"Friday"</span>:</div><div class="line">             typeOfDay = <span class="string">"End of work week"</span>;</div><div class="line">             <span class="keyword">break</span>;</div><div class="line">         <span class="keyword">case</span> <span class="string">"Saturday"</span>:</div><div class="line">         <span class="keyword">case</span> <span class="string">"Sunday"</span>:</div><div class="line">             typeOfDay = <span class="string">"Weekend"</span>;</div><div class="line">             <span class="keyword">break</span>;</div><div class="line">         <span class="keyword">default</span>:</div><div class="line">             <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">"Invalid day of the week: "</span> + dayOfWeekArg);</div><div class="line">     &#125;</div><div class="line">     <span class="keyword">return</span> typeOfDay;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>The <code>switch</code> statement compares the <code>String</code> object in its expression with the expressions associated with each <code>case</code> label as if it were using the <code>String.equals</code> method; consequently, the comparison of <code>String</code> objects in <code>switch</code> statements is case sensitive. The Java compiler generates generally more efficient bytecode from <code>switch</code> statements that use <code>String</code> objects than from chained <code>if-then-else</code> statements.</p>
+<h2 id="Type-Inference-for-Generic-Instance-Creation"><a href="#Type-Inference-for-Generic-Instance-Creation" class="headerlink" title="Type Inference for Generic Instance Creation"></a>Type Inference for Generic Instance Creation</h2><p>You can replace the type arguments required to invoke the constructor of a generic class with an empty set of type parameters (<code>&lt;&gt;</code>) as long as the compiler can infer the type arguments from the context. This pair of angle brackets is informally called the <em>diamond</em>.</p>
+<p>For example, consider the following variable declaration:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Map&lt;String, List&lt;String&gt;&gt; myMap = new HashMap&lt;String, List&lt;String&gt;&gt;();</div></pre></td></tr></table></figure>
+<p>In Java SE 7, you can substitute the parameterized type of the constructor with an empty set of type parameters (<code>&lt;&gt;</code>):</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Map&lt;String, List&lt;String&gt;&gt; myMap = new HashMap&lt;&gt;();</div></pre></td></tr></table></figure>
+<h2 id="Binary-Literals"><a href="#Binary-Literals" class="headerlink" title="Binary Literals"></a>Binary Literals</h2><p>In Java SE 7, the integral types (<code>byte</code>, <code>short</code>, <code>int</code>, and <code>long</code>) can also be expressed using the binary number system. To specify a binary literal, add the prefix <code>0b</code> or <code>0B</code> to the number. The following examples show binary literals:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">// An 8-bit &apos;byte&apos; value:</div><div class="line">byte aByte = (byte)0b00100001;</div><div class="line"></div><div class="line">// A 16-bit &apos;short&apos; value:</div><div class="line">short aShort = (short)0b1010000101000101;</div><div class="line"></div><div class="line">// Some 32-bit &apos;int&apos; values:</div><div class="line">int anInt1 = 0b10100001010001011010000101000101;</div><div class="line">int anInt2 = 0b101;</div><div class="line">int anInt3 = 0B101; // The B can be upper or lower case.</div><div class="line"></div><div class="line">// A 64-bit &apos;long&apos; value. Note the &quot;L&quot; suffix:</div><div class="line">long aLong = 0b1010000101000101101000010100010110100001010001011010000101000101L;</div></pre></td></tr></table></figure>
+<h2 id="Underscores-in-Numeric-Literals"><a href="#Underscores-in-Numeric-Literals" class="headerlink" title="Underscores in Numeric Literals"></a>Underscores in Numeric Literals</h2><p>In Java SE 7 and later, any number of underscore characters (<code>_</code>) can appear anywhere between digits in a numerical literal. This feature enables you, for example, to separate groups of digits in numeric literals, which can improve the readability of your code.</p>
+<p>For instance, if your code contains numbers with many digits, you can use an underscore character to separate digits in groups of three, similar to how you would use a punctuation mark like a comma, or a space, as a separator.</p>
+<p>The following example shows other ways you can use the underscore in numeric literals:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">long creditCardNumber = 1234_5678_9012_3456L;</div><div class="line">long socialSecurityNumber = 999_99_9999L;</div><div class="line">float pi = 	3.14_15F;</div><div class="line">long hexBytes = 0xFF_EC_DE_5E;</div><div class="line">long hexWords = 0xCAFE_BABE;</div><div class="line">long maxLong = 0x7fff_ffff_ffff_ffffL;</div><div class="line">byte nybbles = 0b0010_0101;</div><div class="line">long bytes = 0b11010010_01101001_10010100_10010010;</div></pre></td></tr></table></figure>
+<h2 id="Garbage-First-Collector"><a href="#Garbage-First-Collector" class="headerlink" title="Garbage-First Collector"></a>Garbage-First Collector</h2><p>The Garbage-First (G1) garbage collector is fully supported in Oracle JDK 7 update 4 and later releases. The G1 collector is a server-style garbage collector, targeted for multi-processor machines with large memories. It meets garbage collection (GC) pause time goals with high probability, while achieving high throughput. Whole-heap operations, such as global marking, are performed concurrently with the application threads. This prevents interruptions proportional to heap or live-data size.</p>
+<h1 id="JDK-8"><a href="#JDK-8" class="headerlink" title="JDK 8"></a>JDK 8</h1><blockquote>
+<p><a href="http://www.oracle.com/technetwork/java/javase/8-whats-new-2157071.html" target="_blank" rel="external">http://www.oracle.com/technetwork/java/javase/8-whats-new-2157071.html</a></p>
+</blockquote>
+<h2 id="Lambda-Expressions"><a href="#Lambda-Expressions" class="headerlink" title="Lambda Expressions"></a>Lambda Expressions</h2><p>Lambda Expressions, a new language feature, has been introduced in this release. They enable you to treat functionality as a method argument, or code as data. Lambda expressions let you express instances of single-method interfaces (referred to as functional interfaces) more compactly.</p>
+<h2 id="Default-Methods"><a href="#Default-Methods" class="headerlink" title="Default Methods"></a>Default Methods</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">TimeClient</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">setTime</span><span class="params">(<span class="keyword">int</span> hour, <span class="keyword">int</span> minute, <span class="keyword">int</span> second)</span></span>;</div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">setDate</span><span class="params">(<span class="keyword">int</span> day, <span class="keyword">int</span> month, <span class="keyword">int</span> year)</span></span>;</div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">setDateAndTime</span><span class="params">(<span class="keyword">int</span> day, <span class="keyword">int</span> month, <span class="keyword">int</span> year,</span></span></div><div class="line">                               <span class="keyword">int</span> hour, <span class="keyword">int</span> minute, <span class="keyword">int</span> second);</div><div class="line">    <span class="function">LocalDateTime <span class="title">getLocalDateTime</span><span class="params">()</span></span>;</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">static</span> ZoneId <span class="title">getZoneId</span> <span class="params">(String zoneString)</span> </span>&#123;</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            <span class="keyword">return</span> ZoneId.of(zoneString);</div><div class="line">        &#125; <span class="keyword">catch</span> (DateTimeException e) &#123;</div><div class="line">            System.err.println(<span class="string">"Invalid time zone: "</span> + zoneString +</div><div class="line">                <span class="string">"; using default time zone instead."</span>);</div><div class="line">            <span class="keyword">return</span> ZoneId.systemDefault();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">        </div><div class="line">    <span class="function"><span class="keyword">default</span> ZonedDateTime <span class="title">getZonedDateTime</span><span class="params">(String zoneString)</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> ZonedDateTime.of(getLocalDateTime(), getZoneId(zoneString));</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>Suppose that you want to add new functionality to the <code>TimeClient</code> interface, such as the ability to specify a time zone through a <a href="https://docs.oracle.com/javase/8/docs/api/java/time/ZonedDateTime.html" target="_blank" rel="external"><code>ZonedDateTime</code></a> object (which is like a <a href="https://docs.oracle.com/javase/8/docs/api/java/time/LocalDateTime.html" target="_blank" rel="external"><code>LocalDateTime</code></a> object except that it stores time zone information).</p>
+<p>Following this modification to the <code>TimeClient</code> interface, you would also have to modify the class <code>SimpleTimeClient</code> and implement the method <code>getZonedDateTime</code>. However, rather than leaving <code>getZonedDateTime</code> as <code>abstract</code> (as in the previous example), you can instead define a <em>default implementation</em>. (Remember that an <a href="http://docs.oracle.com/javase/tutorial/java/IandI/abstract.html" target="_blank" rel="external">abstract method</a> is a method declared without an implementation.)</p>
+<h2 id="Java-Date-Time-Packages"><a href="#Java-Date-Time-Packages" class="headerlink" title="Java Date-Time Packages"></a>Java Date-Time Packages</h2><ul>
+<li><a href="http://docs.oracle.com/javase/8/docs/api/java/time/package-summary.html" target="_blank" rel="external"><code>java.time</code></a> - Classes for date, time, date and time combined, time zones, instants, duration, and clocks.</li>
+</ul>
+<h2 id="补充-HashMap-amp-ConcurrentHashMap"><a href="#补充-HashMap-amp-ConcurrentHashMap" class="headerlink" title="补充 HashMap &amp; ConcurrentHashMap"></a>补充 HashMap &amp; ConcurrentHashMap</h2><blockquote>
+<p><a href="https://zhuanlan.zhihu.com/p/21673805" target="_blank" rel="external">https://zhuanlan.zhihu.com/p/21673805</a></p>
+</blockquote>
+<p>数组 + 链表 -&gt; Node数组+链表+<strong>红黑树</strong>(TreeNode)</p>
+<p>链表长度超过8时，链表转换为红黑树</p>
+<p>锁分段 -&gt; <strong>CAS算法</strong> + synchronized(put操作hash值相同节点)</p>
+<p>CAS三个操作数：内存值，期待值，新值。如果内存值和期待值相匹配，更新为新值；否则不执行操作。</p>
+<h2 id="补充-移除永久代"><a href="#补充-移除永久代" class="headerlink" title="补充 移除永久代"></a>补充 移除永久代</h2><p>引入元空间Metaspace</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>JDK 7</p>
+<ul>
+<li>switch支持String类型</li>
+<li>泛型类型指定简化</li>
+<li>二进制表示</li>
+<li>数字中下划线</li>
+<li>G1垃圾收集器</li>
+</ul>
+<p>JDK 8</p>
+<ul>
+<li>Lambda表达式</li>
+<li>接口中默认方法</li>
+<li>新的时间类</li>
+</ul>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/13/JVM/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1619,19 +1790,18 @@ String s2 = new String(&quot;abc&quot;);
           
             <p>最近一直在寻找暑假的实习，照道理来说排序应该是一个高频的面试问题，不过至今也只遇到了描述一下快速排序思想的问题，这里参考了大二算法课上老师所讲的算法以及《算法》（第4版）的内容，使用C++做了练习。<br>如果有错误的话，也欢迎告诉我。（不过博客还没有评价系统..）</p>
 <h2 id="冒泡"><a href="#冒泡" class="headerlink" title="冒泡"></a>冒泡</h2><p>时间复杂度 O(n<sup>2</sup>)</p>
-<p><img src="https://upload.wikimedia.org/wikipedia/commons/3/37/Bubble_sort_animation.gif" alt=""><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">void bubble_sort(vector&lt;int&gt; &amp;numbers) &#123;</div><div class="line">    for (int i = 0; i &lt; numbers.size(); i++) </div><div class="line">        for (int j = i + 1; j &lt; numbers.size(); j++) </div><div class="line">            if (numbers[i] &lt; numbers[j]) </div><div class="line">                swap(number[i], numbers[j]);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/3/37/Bubble_sort_animation.gif" alt=""><br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">bubble_sort</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; &amp;numbers)</span> </span>&#123;</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; numbers.size(); i++) </div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = i + <span class="number">1</span>; j &lt; numbers.size(); j++) </div><div class="line">            <span class="keyword">if</span> (numbers[i] &lt; numbers[j]) </div><div class="line">                swap(number[i], numbers[j]);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <p><br>  </p>
 <h2 id="选择"><a href="#选择" class="headerlink" title="选择"></a>选择</h2><p>时间复杂度 O(n<sup>2</sup>)</p>
-<p><img src="https://upload.wikimedia.org/wikipedia/commons/b/b0/Selection_sort_animation.gif" alt=""><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">void choose_sort(vector&lt;int&gt; &amp;numbers) &#123;</div><div class="line">	for (int i = 0; i &lt; numbers.size(); i++) &#123;</div><div class="line">		int min = i;</div><div class="line">		for (int j = i + 1; j &lt; numbers.size(); j++) </div><div class="line">	    	if (numbers[min] &gt; numbers[j]) min = j;       </div><div class="line">	    swap(numbers[i], numbers[min]);</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/b/b0/Selection_sort_animation.gif" alt=""><br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">choose_sort</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; &amp;numbers)</span> </span>&#123;</div><div class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; numbers.size(); i++) &#123;</div><div class="line">		<span class="keyword">int</span> min = i;</div><div class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> j = i + <span class="number">1</span>; j &lt; numbers.size(); j++) </div><div class="line">	    	<span class="keyword">if</span> (numbers[min] &gt; numbers[j]) min = j;       </div><div class="line">	    swap(numbers[i], numbers[min]);</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <p><br></p>
 <h2 id="插入"><a href="#插入" class="headerlink" title="插入"></a>插入</h2><p>时间复杂度 O(n<sup>2</sup>)</p>
-<p><img src="https://upload.wikimedia.org/wikipedia/commons/2/25/Insertion_sort_animation.gif" alt=""><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">void insert_sort(vector&lt;int&gt; &amp;numbers) &#123;</div><div class="line">	for (int i = 1; i &lt; numbers.size(); i++) &#123;</div><div class="line">		for (int j = i; j &gt; 0 &amp;&amp; numbers[j] &lt; numbers[j - 1]; j--)</div><div class="line">	    	swap(numbers[j], numbers[j - 1]);</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/2/25/Insertion_sort_animation.gif" alt=""><br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">insert_sort</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; &amp;numbers)</span> </span>&#123;</div><div class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; numbers.size(); i++) &#123;</div><div class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> j = i; j &gt; <span class="number">0</span> &amp;&amp; numbers[j] &lt; numbers[j - <span class="number">1</span>]; j--)</div><div class="line">	    	swap(numbers[j], numbers[j - <span class="number">1</span>]);</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <p><br></p>
 <h2 id="快排"><a href="#快排" class="headerlink" title="快排"></a>快排</h2><p>时间复杂度O(nlogn) 最坏状态 O(n<sup>2</sup>)</p>
-<p><img src="https://upload.wikimedia.org/wikipedia/commons/6/6a/Sorting_quicksort_anim.gif" alt=""><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">int partition(vector&lt;int&gt; &amp;numbers, int lo, int hi) &#123;</div><div class="line">	int i = lo; int j = hi + 1;</div><div class="line">	int n = numbers[lo];</div><div class="line">	while (true) &#123;</div><div class="line">		while (numbers[++i] &lt; n) if (i == hi) break;        </div><div class="line">		while (numbers[--j] &gt; n) if (j == lo) break;</div><div class="line">        if (i &gt;= j) break;</div><div class="line">        swap(numbers[i], numbers[j]);</div><div class="line">    &#125;</div><div class="line">    swap(numbers[lo], numbers[j]);</div><div class="line">    return j;</div><div class="line">&#125;</div><div class="line"></div><div class="line">void quick_sort(vector&lt;int&gt; &amp;numbers, int lo, int hi) &#123;</div><div class="line">    if (lo &gt;= hi) return;</div><div class="line">    int j = partition(numbers, lo, hi);</div><div class="line">    quick_sort(numbers, lo, j - 1);</div><div class="line">    quick_sort(numbers, j + 1, hi);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p><br></p>
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/6/6a/Sorting_quicksort_anim.gif" alt=""><br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">partition</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; &amp;numbers, <span class="keyword">int</span> lo, <span class="keyword">int</span> hi)</span> </span>&#123;</div><div class="line">	<span class="keyword">int</span> i = lo; <span class="keyword">int</span> j = hi + <span class="number">1</span>;</div><div class="line">	<span class="keyword">int</span> n = numbers[lo];</div><div class="line">	<span class="keyword">while</span> (<span class="literal">true</span>) &#123;</div><div class="line">		<span class="keyword">while</span> (numbers[++i] &lt; n) <span class="keyword">if</span> (i == hi) <span class="keyword">break</span>;        </div><div class="line">		<span class="keyword">while</span> (numbers[--j] &gt; n) <span class="keyword">if</span> (j == lo) <span class="keyword">break</span>;</div><div class="line">        <span class="keyword">if</span> (i &gt;= j) <span class="keyword">break</span>;</div><div class="line">        swap(numbers[i], numbers[j]);</div><div class="line">    &#125;</div><div class="line">    swap(numbers[lo], numbers[j]);</div><div class="line">    <span class="keyword">return</span> j;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">quick_sort</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; &amp;numbers, <span class="keyword">int</span> lo, <span class="keyword">int</span> hi)</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span> (lo &gt;= hi) <span class="keyword">return</span>;</div><div class="line">    <span class="keyword">int</span> j = partition(numbers, lo, hi);</div><div class="line">    quick_sort(numbers, lo, j - <span class="number">1</span>);</div><div class="line">    quick_sort(numbers, j + <span class="number">1</span>, hi);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <h2 id="归并"><a href="#归并" class="headerlink" title="归并"></a>归并</h2><p>时间复杂度O(nlogn)</p>
-<p><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Merge_sort_animation2.gif/220px-Merge_sort_animation2.gif" alt=""><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">int merge(vector&lt;int&gt; &amp;numbers, int lo, int mid, int hi) &#123;</div><div class="line">    int i = lo; int j = mid + 1;</div><div class="line">    vector&lt;int&gt; copy;</div><div class="line">    copy = numbers;</div><div class="line">    for (int k = lo; k &lt;= hi; k++) &#123;</div><div class="line">        if (i &gt; mid) numbers[k] = copy[j++];</div><div class="line">        else if (j &gt; hi) numbers[k] = copy[i++];</div><div class="line">        else if (copy[i] &lt; copy[j]) numbers[k] = copy[j++];</div><div class="line">        else numbers[k] = copy[i++];</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">void merge_sort(vector&lt;int&gt; &amp;numbers, int lo, int hi) &#123;</div><div class="line">    if (lo &gt;= hi) return;</div><div class="line">    int mid = lo + (hi - lo) / 2;</div><div class="line">    sort(numbers, lo, mid);</div><div class="line">    sort(numbers, mid + 1, hi);</div><div class="line">    merge(numbers, lo, mid, hi);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Merge_sort_animation2.gif/220px-Merge_sort_animation2.gif" alt=""><br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">merge</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; &amp;numbers, <span class="keyword">int</span> lo, <span class="keyword">int</span> mid, <span class="keyword">int</span> hi)</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> i = lo; <span class="keyword">int</span> j = mid + <span class="number">1</span>;</div><div class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; copy;</div><div class="line">    copy = numbers;</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> k = lo; k &lt;= hi; k++) &#123;</div><div class="line">        <span class="keyword">if</span> (i &gt; mid) numbers[k] = copy[j++];</div><div class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (j &gt; hi) numbers[k] = copy[i++];</div><div class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (copy[i] &lt; copy[j]) numbers[k] = copy[j++];</div><div class="line">        <span class="keyword">else</span> numbers[k] = copy[i++];</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">merge_sort</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; &amp;numbers, <span class="keyword">int</span> lo, <span class="keyword">int</span> hi)</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span> (lo &gt;= hi) <span class="keyword">return</span>;</div><div class="line">    <span class="keyword">int</span> mid = lo + (hi - lo) / <span class="number">2</span>;</div><div class="line">    merge_sort(numbers, lo, mid);</div><div class="line">    merge_sort(numbers, mid + <span class="number">1</span>, hi);</div><div class="line">    merge(numbers, lo, mid, hi);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 
           
         
@@ -1840,7 +2010,7 @@ String s2 = new String(&quot;abc&quot;);
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-count">9</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
