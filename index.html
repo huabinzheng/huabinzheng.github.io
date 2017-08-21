@@ -250,6 +250,186 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/21/MySQL技术内幕：InnoDB存储引擎-笔记/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Edward">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Silent Majority">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/08/21/MySQL技术内幕：InnoDB存储引擎-笔记/" itemprop="url">
+                  MySQL技术内幕：InnoDB存储引擎 笔记
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-21T22:26:11+08:00">
+                2017-08-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p>MySQL技术内幕：InnoDB存储引擎</p>
+</blockquote>
+<h1 id="第1章-MySQL体系结构和存储引擎"><a href="#第1章-MySQL体系结构和存储引擎" class="headerlink" title="第1章 MySQL体系结构和存储引擎"></a>第1章 MySQL体系结构和存储引擎</h1><p>MySQL被设计为一个单进程多线程架构的数据库。MySQL数据库实例在系统上的表现就是一个进程。</p>
+<h1 id="第4章-表"><a href="#第4章-表" class="headerlink" title="第4章 表"></a>第4章 表</h1><h2 id="约束"><a href="#约束" class="headerlink" title="约束"></a>约束</h2><ul>
+<li>Primary Key</li>
+<li>Unique Key</li>
+<li>Foreign Key</li>
+<li>Default</li>
+<li>NOT NULL</li>
+</ul>
+<p>创建了一个唯一索引，就创建了一个唯一的约束。约束更是一个逻辑的概念，用来保证数据的完整性；而索引是一个数据结构，有逻辑上的概念，在数据库中更是一个物理存储的方式。</p>
+<h2 id="触发器"><a href="#触发器" class="headerlink" title="触发器"></a>触发器</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">CREATE</span> <span class="keyword">TRIGGER</span> trigger_name </div><div class="line"><span class="keyword">BEFORE</span>|<span class="keyword">AFTER</span> <span class="keyword">INSERT</span>|<span class="keyword">UPDATE</span>|<span class="keyword">DELETE</span> <span class="keyword">on</span> tbl_name </div><div class="line"><span class="keyword">FOR</span> <span class="keyword">EACH</span> <span class="keyword">ROW</span> trigger_stmt</div></pre></td></tr></table></figure>
+<h2 id="外键"><a href="#外键" class="headerlink" title="外键"></a>外键</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">FOREIGN KEY (index_col_name)</div><div class="line">REFERENCES tbl_name(index_col_name)</div></pre></td></tr></table></figure>
+<h2 id="视图"><a href="#视图" class="headerlink" title="视图"></a>视图</h2><p>视图是一个命名的虚表，它由一个查询来定义，可以当做表使用。视图中的数据没有物理表现形式。主要用途之一是被用做一个抽象装置。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">CREATE</span> <span class="keyword">VIEW</span> view_name <span class="keyword">AS</span> select_statement</div></pre></td></tr></table></figure>
+<h1 id="第5章-索引与算法"><a href="#第5章-索引与算法" class="headerlink" title="第5章 索引与算法"></a>第5章 索引与算法</h1><p>InnoDB存储索引支持两种常见的索引，一种是B+树索引，另一种是哈希索引。</p>
+<h2 id="B-树"><a href="#B-树" class="headerlink" title="B+树"></a>B+树</h2><p>在B+树中，所有记录节点都是按照键值的大小顺序存放在同一层的叶节点中，各叶结点指针进行连接。</p>
+<h2 id="B-树索引"><a href="#B-树索引" class="headerlink" title="B+树索引"></a>B+树索引</h2><p>B+索引在数据库中有一个特点就是其高扇出性，因此在数据库中，B+树的高度一般在2~3层，也就是对于查找某一键值的行记录，最多只需要2到3次IO。减少IO次数</p>
+<p>B+树索引可以分为聚集索引和辅助聚集索引（非聚集索引）。不同点是叶节点存放的是否是一整行的信息。</p>
+<h3 id="聚集索引"><a href="#聚集索引" class="headerlink" title="聚集索引"></a>聚集索引</h3><p>聚集索引就是按照每张表的主键构造一颗B+树，并且叶节点中存放着整张表的行记录数据，因此也让聚集索引的叶节点成为数据页。</p>
+<p>由于实际的数据页只能按照一颗B+树进行排序，因此每张表只能拥有一个聚集索引。<br>好处</p>
+<ul>
+<li>主键的排序查找</li>
+<li>范围查询</li>
+</ul>
+<h3 id="辅助索引"><a href="#辅助索引" class="headerlink" title="辅助索引"></a>辅助索引</h3><p>叶级别不包含行的全部数据。叶节点除了包含键值以外，每个叶级别中的索引行中还包含了一个书签，用来告诉存储引擎哪里可以找到与索引相对应的行数据。<br>辅助索引的存在并不影响数据在聚集索引中的组织，因此每张表上可以有多个辅助索引。通过辅助索引来寻找数据时，InnoDB存储引擎遍历辅助索引并通过叶级别的指针获得指向主键索引的主键，然后再通过主键索引来找到一个完整的行记录。</p>
+<h3 id="索引的创建"><a href="#索引的创建" class="headerlink" title="索引的创建"></a>索引的创建</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">CREATE</span> <span class="keyword">INDEX</span> index_name</div><div class="line"><span class="keyword">ON</span> tbl_name(index_col_name……)</div></pre></td></tr></table></figure>
+<h2 id="B-树索引的使用"><a href="#B-树索引的使用" class="headerlink" title="B+树索引的使用"></a>B+树索引的使用</h2><p>访问表中很少一部分行时，使用B+树索引才有意义。<br>如果某个字段的取值范围很广，几乎没有重复性，即高选择性，使用B+树索引是最适合的，但是取出的行数占表中大部分的数据时，MySQL数据库不会使用B+树索引。</p>
+<h3 id="联合索引"><a href="#联合索引" class="headerlink" title="联合索引"></a>联合索引</h3><p>联合索引是指对表上的多个列做索引。<br>通过叶节点可以逻辑上顺序地读出所有数据，可以对第二个键值进行排序。</p>
+<h2 id="哈希算法"><a href="#哈希算法" class="headerlink" title="哈希算法"></a>哈希算法</h2><p>InnoDB存储引擎中自适应哈希索引使用的是散列表的数据结构。</p>
+<h1 id="第6章-锁"><a href="#第6章-锁" class="headerlink" title="第6章 锁"></a>第6章 锁</h1><h2 id="InnoDB存储引擎中的锁"><a href="#InnoDB存储引擎中的锁" class="headerlink" title="InnoDB存储引擎中的锁"></a>InnoDB存储引擎中的锁</h2><h3 id="索的类型"><a href="#索的类型" class="headerlink" title="索的类型"></a>索的类型</h3><ul>
+<li>共享锁：允许事务读一行数据</li>
+<li>排他锁：允许事务删除或者更新一行数据</li>
+</ul>
+<h1 id="第7章-事务"><a href="#第7章-事务" class="headerlink" title="第7章 事务"></a>第7章 事务</h1><h2 id="ACID"><a href="#ACID" class="headerlink" title="ACID"></a>ACID</h2><ul>
+<li><p>原子性atomicity</p>
+<p>整个数据库事务是不可分割的单位。</p>
+</li>
+<li><p>一致性consistency</p>
+<p>数据库从与一种状态转变为下一种一致的状态。事物开始之前和事务结束以后，数据库的完整性约束没有被破坏。</p>
+</li>
+</ul>
+<ul>
+<li><p>隔离性isolation</p>
+<p>一个事务的影响在该事务提交前对其他事务都不可见，通过锁实现。</p>
+</li>
+</ul>
+<ul>
+<li><p>持久性durability</p>
+<p>事务一旦提交，其结果就是永久性的。</p>
+</li>
+</ul>
+<h2 id="事务控制语句"><a href="#事务控制语句" class="headerlink" title="事务控制语句"></a>事务控制语句</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">START</span> <span class="keyword">TRANSACTION</span></div><div class="line"><span class="keyword">COMMIT</span></div></pre></td></tr></table></figure>
+<h2 id="事务的隔离级别"><a href="#事务的隔离级别" class="headerlink" title="事务的隔离级别"></a>事务的隔离级别</h2><ul>
+<li>READ UNCOMMITED</li>
+<li>READ COMMITED</li>
+<li>REPEATABLE READ</li>
+<li>SERIALIZABLE</li>
+</ul>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/20/Java新版本特性/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -984,126 +1164,6 @@
 <p>sizeof(b) = vptr_b(8) + sizeof(a) = 24</p>
 <p>其他编译器还会有子类指向父类的指针</p>
 
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/12/MySQL技术内幕：InnoDB存储引擎 笔记/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Edward">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Silent Majority">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/08/12/MySQL技术内幕：InnoDB存储引擎 笔记/" itemprop="url">
-                  未命名
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-12T19:38:59+08:00">
-                2017-08-12
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            
           
         
       
@@ -1962,7 +2022,7 @@ String s2 = new String(&quot;abc&quot;);
             
             <div class="site-state-item site-state-tags">
               
-                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-count">3</span>
                 <span class="site-state-item-name">标签</span>
               
             </div>
