@@ -1,0 +1,744 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Java," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="Java多线程编程核心技术  第1章 Java多线程技能使用多线程继承Thread类局限：不支持多继承 12345678910111213public class MyThread extends Thread &amp;#123;	@Override  	public void run() &amp;#123;        ……    &amp;#125;&amp;#125;public class Main &amp;#123;">
+<meta name="keywords" content="Java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java多线程编程核心技术 笔记">
+<meta property="og:url" content="http://yoursite.com/2017/08/23/Java多线程编程核心技术-笔记/index.html">
+<meta property="og:site_name" content="Silent Majority">
+<meta property="og:description" content="Java多线程编程核心技术  第1章 Java多线程技能使用多线程继承Thread类局限：不支持多继承 12345678910111213public class MyThread extends Thread &amp;#123;	@Override  	public void run() &amp;#123;        ……    &amp;#125;&amp;#125;public class Main &amp;#123;">
+<meta property="og:updated_time" content="2017-08-24T14:21:35.578Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java多线程编程核心技术 笔记">
+<meta name="twitter:description" content="Java多线程编程核心技术  第1章 Java多线程技能使用多线程继承Thread类局限：不支持多继承 12345678910111213public class MyThread extends Thread &amp;#123;	@Override  	public void run() &amp;#123;        ……    &amp;#125;&amp;#125;public class Main &amp;#123;">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/08/23/Java多线程编程核心技术-笔记/"/>
+
+
+
+
+
+  <title> Java多线程编程核心技术 笔记 | Silent Majority </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Silent Majority</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/23/Java多线程编程核心技术-笔记/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Edward">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Silent Majority">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Java多线程编程核心技术 笔记
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-23T22:09:19+08:00">
+                2017-08-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>Java多线程编程核心技术</p>
+</blockquote>
+<h1 id="第1章-Java多线程技能"><a href="#第1章-Java多线程技能" class="headerlink" title="第1章 Java多线程技能"></a>第1章 Java多线程技能</h1><h2 id="使用多线程"><a href="#使用多线程" class="headerlink" title="使用多线程"></a>使用多线程</h2><h3 id="继承Thread类"><a href="#继承Thread类" class="headerlink" title="继承Thread类"></a>继承Thread类</h3><p>局限：不支持多继承</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyThread</span> <span class="keyword">extends</span> <span class="title">Thread</span> </span>&#123;</div><div class="line">	<span class="meta">@Override</span></div><div class="line">  	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</div><div class="line">        ……</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">        MyThread mythread = <span class="keyword">new</span> MyThread();</div><div class="line">    	mythread.start();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>Thread.java类中的start()方法通知线程规划器此线程已经准备就绪，等待调用线程对象的run()方法，让系统安排时间调用Thread中的run()方法，使线程得到运行。启动线程，具有异步执行的效果。</p>
+<p>如果调用代码thread.run()就不是异步执行，而是同步，由main主线程来调用run()方法，必须等run()方法中的代码执行完毕后才可以执行后面的代码。</p>
+<h3 id="实现Runnable接口"><a href="#实现Runnable接口" class="headerlink" title="实现Runnable接口"></a>实现Runnable接口</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyRunnable</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</div><div class="line">    	……</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">        Runnable r = <span class="keyword">new</span> MyRunnable();</div><div class="line">    	Thread thread = <span class="keyword">new</span> Thread(r);</div><div class="line">    	thread.start();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="守护线程"><a href="#守护线程" class="headerlink" title="守护线程"></a>守护线程</h2><p>当进程中不存在非守护线程，则守护线程自动销毁。典型的守护进程就是垃圾回收进程。</p>
+<h1 id="第2章-对象及变量的并发访问"><a href="#第2章-对象及变量的并发访问" class="headerlink" title="第2章 对象及变量的并发访问"></a>第2章 对象及变量的并发访问</h1><h2 id="synchronized同步方法"><a href="#synchronized同步方法" class="headerlink" title="synchronized同步方法"></a>synchronized同步方法</h2><h3 id="方法内的变量为线程安全"><a href="#方法内的变量为线程安全" class="headerlink" title="方法内的变量为线程安全"></a>方法内的变量为线程安全</h3><p>方法前加关键字<code>synchronized</code></p>
+<h3 id="多个对象多个锁"><a href="#多个对象多个锁" class="headerlink" title="多个对象多个锁"></a>多个对象多个锁</h3><p>关键字<code>synchronized</code>取得的锁都是对象锁，哪个线程先执行带<code>synchronized</code>关键字的方法，哪个线程就持有该方法所属对象的锁<code>Lock</code>，其他线程只能呈现等待状态，前提是多个线程访问的是同一个对象。</p>
+<h3 id="锁重入"><a href="#锁重入" class="headerlink" title="锁重入"></a>锁重入</h3><p>一个<code>synchronized</code>方法/块的内部调用本类的其他<code>synchronized</code>方法/块时，是永远可以得到锁的。</p>
+<h3 id="出现异常，锁自动释放"><a href="#出现异常，锁自动释放" class="headerlink" title="出现异常，锁自动释放"></a>出现异常，锁自动释放</h3><p>当一个县城执行的代码出现异常时，其所持有的锁会自动释放。</p>
+<h3 id="同步不具有继承性"><a href="#同步不具有继承性" class="headerlink" title="同步不具有继承性"></a>同步不具有继承性</h3><p>还要在子类的方法中添加<code>synchronized</code>关键字</p>
+<h2 id="synchronized同步语句块"><a href="#synchronized同步语句块" class="headerlink" title="synchronized同步语句块"></a>synchronized同步语句块</h2><p>当一个线程访问object的一个<code>synchronized(this)</code>同步代码块时，另一个线程仍然可以访问该object对象中的非<code>synchronized(this)</code>同步代码块。</p>
+<p>当一个线程访问object的一个<code>synchronized(this)</code>同步代码块时，其他线程对于同一个object中所有其他<code>synchronized(this)</code>同步代码块的访问将堵塞。</p>
+<p><code>synchronized</code>关键字加到static静态方法上是给Class类上锁，而<code>synchronized</code>关键字加到非static静态方法上是给对象上锁</p>
+<h2 id="volatile关键字"><a href="#volatile关键字" class="headerlink" title="volatile关键字"></a>volatile关键字</h2><p>通过使用volatile关键字，强制地从公共内存中读取变量的值。</p>
+<p>使用volatile关键字增加了实例变量在多个线程之间的可见性，但最致命的缺点是不支持原子性</p>
+<h3 id="synchronized-VS-volatile"><a href="#synchronized-VS-volatile" class="headerlink" title="synchronized VS volatile"></a>synchronized VS volatile</h3><ul>
+<li><p>关键字<code>volatile</code>是线程同步的轻量级实现，性能更好；</p>
+<p><code>volatile</code>只能修饰与变量，<code>synchronized</code>可以修饰方法以及代码块。</p>
+<p>随着JDK新版本发布，<code>synchronized</code>关键字在执行效率上得到很大提升</p>
+</li>
+<li><p>多线程访问<code>volatile</code>不会发生堵塞，<code>synchronized</code>会发生堵塞</p>
+</li>
+<li><p><code>volatile</code>能保证数据的可见性，但不能保持原子性；</p>
+<p><code>synchronized</code>可以保证原子性，间接保证可见性</p>
+</li>
+<li><p>关键字<code>volatile</code>解决的变量在多个线程之间的可见性；</p>
+<p>关键字<code>synchronized</code>解决的是多个线程之间访问资源的同步性；</p>
+</li>
+</ul>
+<h3 id="非原子性"><a href="#非原子性" class="headerlink" title="非原子性"></a>非原子性</h3><p>如果修改实例变量中的数据，比如i++，并不是一个原子操作，也就是非线程安全的</p>
+<ol>
+<li>从内存中取出i的值</li>
+<li>计算i的值</li>
+<li>将i的值写到内存中</li>
+</ol>
+<h3 id="使用原子类进行i-操作"><a href="#使用原子类进行i-操作" class="headerlink" title="使用原子类进行i++操作"></a>使用原子类进行i++操作</h3><p><code>AtomicInteger</code>原子类进行实现</p>
+<h1 id="第3章-线程间通信"><a href="#第3章-线程间通信" class="headerlink" title="第3章 线程间通信"></a>第3章 线程间通信</h1><h2 id="通知等待机制"><a href="#通知等待机制" class="headerlink" title="通知等待机制"></a>通知等待机制</h2><p>关键字<code>synchronized</code>可以将任何一个Object对象作为同步对象来看待，而Java为每个Object都实现了<code>wait()</code>和<code>notify()</code>方法，它们必须用在被<code>synchronized</code>同步的Object的临界区内。通过调用<code>wait()</code>方法可以使处于临界区内的线程进入等待状态，同时释放被同步对象的锁。而<code>notify()</code>操作可以唤醒一个因调用了<code>wait()</code>操作而处于堵塞状态中的线程，使其进入就绪状态。</p>
+<p>调用方法<code>notify()</code>一次只随机通知一个线程进行唤醒；</p>
+<p>为了唤醒全部线程，可以使用<code>notifyAll()</code>方法。</p>
+<h2 id="类ThreadLocal的使用"><a href="#类ThreadLocal的使用" class="headerlink" title="类ThreadLocal的使用"></a>类ThreadLocal的使用</h2><p>类<code>ThreadLocal</code>主要解决的就是每个线程绑定自己的值。</p>
+<h1 id="第4章-Lock的使用"><a href="#第4章-Lock的使用" class="headerlink" title="第4章 Lock的使用"></a>第4章 Lock的使用</h1><h2 id="使用ReentrantLock类"><a href="#使用ReentrantLock类" class="headerlink" title="使用ReentrantLock类"></a>使用ReentrantLock类</h2><p>类<code>ReentrantLock</code>需要借助于<code>Condition</code>对象可以实现等待通知模式。</p>
+<h3 id="公平锁与非公平锁"><a href="#公平锁与非公平锁" class="headerlink" title="公平锁与非公平锁"></a>公平锁与非公平锁</h3><p>公平锁表示线程获取锁的顺序是按照线程加锁的顺序来分配的，即先来先得的FIFO先进先出顺序；</p>
+<p>非公平锁就是一种获取锁的抢占机制，是随机获得锁的。</p>
+<h2 id="使用ReentrantReadWriteLock类"><a href="#使用ReentrantReadWriteLock类" class="headerlink" title="使用ReentrantReadWriteLock类"></a>使用ReentrantReadWriteLock类</h2><p>类<code>ReentrantLock</code>具有完全互斥排他的效果，即同一时间只有一个线程在执行<code>ReentrantLock.lock()</code>方法后面的任务，虽然保证了实例变量的线程安全性，但效率却是非常底下的。</p>
+<p>读写锁表示也有两个锁，一个是读操作相关的锁，也成为共享锁；另一个是写操作相关的锁，也叫排他锁。多个读锁之间不互斥，写锁与读锁互斥，写锁与写锁互斥。多个Thread可以同时进行读取操作，但是同一时刻只允许一个Thread进行写入操作。</p>
+<h1 id="第6章-单例模式与多线程"><a href="#第6章-单例模式与多线程" class="headerlink" title="第6章 单例模式与多线程"></a>第6章 单例模式与多线程</h1><h2 id="立刻加载"><a href="#立刻加载" class="headerlink" title="立刻加载"></a>立刻加载</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyObject</span> </span>&#123;</div><div class="line">	<span class="keyword">private</span> <span class="keyword">static</span> MyObject myObject = <span class="keyword">new</span> MyObject();</div><div class="line">  	<span class="function"><span class="keyword">private</span> <span class="title">MyObject</span><span class="params">()</span> </span>&#123;&#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> MyObject <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> myObject;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="延迟加载"><a href="#延迟加载" class="headerlink" title="延迟加载"></a>延迟加载</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyObject</span> </span>&#123;</div><div class="line">	<span class="keyword">private</span> <span class="keyword">static</span> MyObject myObject;</div><div class="line">  	<span class="function"><span class="keyword">private</span> <span class="title">MyObject</span><span class="params">()</span> </span>&#123;&#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> MyObject <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span> (myObject == <span class="keyword">null</span>) &#123;</div><div class="line">            myObject = <span class="keyword">new</span> MyObject();</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> myObject;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>不能保证多线程安全</p>
+<h2 id="延迟加载的解决方案"><a href="#延迟加载的解决方案" class="headerlink" title="延迟加载的解决方案"></a>延迟加载的解决方案</h2><h3 id="synchronized关键字"><a href="#synchronized关键字" class="headerlink" title="synchronized关键字"></a>synchronized关键字</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyObject</span> </span>&#123;</div><div class="line">	<span class="keyword">private</span> <span class="keyword">static</span> MyObject myObject;</div><div class="line">  	<span class="function"><span class="keyword">private</span> <span class="title">MyObject</span><span class="params">()</span> </span>&#123;&#125;</div><div class="line">    <span class="function"><span class="keyword">synchronized</span> <span class="keyword">public</span> <span class="keyword">static</span> MyObject <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span> (myObject == <span class="keyword">null</span>) &#123;</div><div class="line">            myObject = <span class="keyword">new</span> MyObject();</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> myObject;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>效率低</p>
+<h3 id="双检查锁"><a href="#双检查锁" class="headerlink" title="双检查锁"></a>双检查锁</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyObject</span> </span>&#123;</div><div class="line">	<span class="keyword">private</span> <span class="keyword">volatile</span> <span class="keyword">static</span> MyObject myObject;</div><div class="line">  	<span class="function"><span class="keyword">private</span> <span class="title">MyObject</span><span class="params">()</span> </span>&#123;&#125;</div><div class="line">    <span class="function"><span class="keyword">synchronized</span> <span class="keyword">public</span> <span class="keyword">static</span> MyObject <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span> (myObject == <span class="keyword">null</span>) &#123;</div><div class="line">            <span class="keyword">synchronized</span>(MyObject.class) &#123;</div><div class="line">                <span class="keyword">if</span> (myObject == <span class="keyword">null</span>) &#123;</div><div class="line">                    myObject = <span class="keyword">new</span> MyObject();</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> myObject;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h1 id="第7章-其他"><a href="#第7章-其他" class="headerlink" title="第7章 其他"></a>第7章 其他</h1><h2 id="线程的状态"><a href="#线程的状态" class="headerlink" title="线程的状态"></a>线程的状态</h2><p>六种状态</p>
+<ul>
+<li>NEW</li>
+<li>RUNNABLE </li>
+<li>BLOCKED</li>
+<li>WAITING</li>
+<li>TIMED_WAITING</li>
+<li>TERMINATED</li>
+</ul>
+<p>补充：五种状态</p>
+<ul>
+<li>新建</li>
+<li>就绪（RUNNABLE ）</li>
+<li>运行（RUNNABLE ）</li>
+<li>堵塞（BLOCKED, WAITING,TIMED_WAITING）</li>
+<li>死亡</li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java/" rel="tag"># Java</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/08/21/MySQL技术内幕：InnoDB存储引擎-笔记/" rel="prev" title="MySQL技术内幕：InnoDB存储引擎 笔记">
+                MySQL技术内幕：InnoDB存储引擎 笔记 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="Edward" />
+          <p class="site-author-name" itemprop="name">Edward</p>
+           
+              <p class="site-description motion-element" itemprop="description">SE @ SJTU</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">标签</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#第1章-Java多线程技能"><span class="nav-number">1.</span> <span class="nav-text">第1章 Java多线程技能</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#使用多线程"><span class="nav-number">1.1.</span> <span class="nav-text">使用多线程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#继承Thread类"><span class="nav-number">1.1.1.</span> <span class="nav-text">继承Thread类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实现Runnable接口"><span class="nav-number">1.1.2.</span> <span class="nav-text">实现Runnable接口</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#守护线程"><span class="nav-number">1.2.</span> <span class="nav-text">守护线程</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第2章-对象及变量的并发访问"><span class="nav-number">2.</span> <span class="nav-text">第2章 对象及变量的并发访问</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#synchronized同步方法"><span class="nav-number">2.1.</span> <span class="nav-text">synchronized同步方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#方法内的变量为线程安全"><span class="nav-number">2.1.1.</span> <span class="nav-text">方法内的变量为线程安全</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多个对象多个锁"><span class="nav-number">2.1.2.</span> <span class="nav-text">多个对象多个锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#锁重入"><span class="nav-number">2.1.3.</span> <span class="nav-text">锁重入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#出现异常，锁自动释放"><span class="nav-number">2.1.4.</span> <span class="nav-text">出现异常，锁自动释放</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#同步不具有继承性"><span class="nav-number">2.1.5.</span> <span class="nav-text">同步不具有继承性</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#synchronized同步语句块"><span class="nav-number">2.2.</span> <span class="nav-text">synchronized同步语句块</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#volatile关键字"><span class="nav-number">2.3.</span> <span class="nav-text">volatile关键字</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#synchronized-VS-volatile"><span class="nav-number">2.3.1.</span> <span class="nav-text">synchronized VS volatile</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#非原子性"><span class="nav-number">2.3.2.</span> <span class="nav-text">非原子性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用原子类进行i-操作"><span class="nav-number">2.3.3.</span> <span class="nav-text">使用原子类进行i++操作</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第3章-线程间通信"><span class="nav-number">3.</span> <span class="nav-text">第3章 线程间通信</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#通知等待机制"><span class="nav-number">3.1.</span> <span class="nav-text">通知等待机制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类ThreadLocal的使用"><span class="nav-number">3.2.</span> <span class="nav-text">类ThreadLocal的使用</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第4章-Lock的使用"><span class="nav-number">4.</span> <span class="nav-text">第4章 Lock的使用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#使用ReentrantLock类"><span class="nav-number">4.1.</span> <span class="nav-text">使用ReentrantLock类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#公平锁与非公平锁"><span class="nav-number">4.1.1.</span> <span class="nav-text">公平锁与非公平锁</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用ReentrantReadWriteLock类"><span class="nav-number">4.2.</span> <span class="nav-text">使用ReentrantReadWriteLock类</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第6章-单例模式与多线程"><span class="nav-number">5.</span> <span class="nav-text">第6章 单例模式与多线程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#立刻加载"><span class="nav-number">5.1.</span> <span class="nav-text">立刻加载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#延迟加载"><span class="nav-number">5.2.</span> <span class="nav-text">延迟加载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#延迟加载的解决方案"><span class="nav-number">5.3.</span> <span class="nav-text">延迟加载的解决方案</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#synchronized关键字"><span class="nav-number">5.3.1.</span> <span class="nav-text">synchronized关键字</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#双检查锁"><span class="nav-number">5.3.2.</span> <span class="nav-text">双检查锁</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第7章-其他"><span class="nav-number">6.</span> <span class="nav-text">第7章 其他</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#线程的状态"><span class="nav-number">6.1.</span> <span class="nav-text">线程的状态</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Edward</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
