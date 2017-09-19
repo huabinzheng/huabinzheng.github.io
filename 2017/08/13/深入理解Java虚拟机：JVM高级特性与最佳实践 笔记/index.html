@@ -94,7 +94,7 @@
 <meta property="og:url" content="http://yoursite.com/2017/08/13/深入理解Java虚拟机：JVM高级特性与最佳实践 笔记/index.html">
 <meta property="og:site_name" content="Silent Majority">
 <meta property="og:description" content="深入理解Java虚拟机：JVM高级特性与最佳实践  第2章 Java内存区域与内存溢出异常运行时数据区域 程序计数器 当前线程所执行的字节码的行号指示器，线程私有    Java虚拟机栈 线程私有，描述Java方法执行的内存模型：每个方法在执行的同时都会创建一个栈帧用于存储信息（局部变量表等） 局部变量表存放了各种基本数据类型、对象引用类型。  线程请求的栈深度大于虚拟机所允许的深度，抛出Sta">
-<meta property="og:updated_time" content="2017-08-23T13:58:07.984Z">
+<meta property="og:updated_time" content="2017-09-09T13:41:25.784Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="深入理解Java虚拟机：JVM高级特性与最佳实践 笔记">
 <meta name="twitter:description" content="深入理解Java虚拟机：JVM高级特性与最佳实践  第2章 Java内存区域与内存溢出异常运行时数据区域 程序计数器 当前线程所执行的字节码的行号指示器，线程私有    Java虚拟机栈 线程私有，描述Java方法执行的内存模型：每个方法在执行的同时都会创建一个栈帧用于存储信息（局部变量表等） 局部变量表存放了各种基本数据类型、对象引用类型。  线程请求的栈深度大于虚拟机所允许的深度，抛出Sta">
@@ -495,11 +495,21 @@
 </ul>
 <h1 id="第7章-虚拟机类加载机制"><a href="#第7章-虚拟机类加载机制" class="headerlink" title="第7章 虚拟机类加载机制"></a>第7章 虚拟机类加载机制</h1><p>虚拟机的类加载机制：虚拟机把描述类的数据从Class文件加载到内存，并对数据进行校验、转换解析和初始化，最终形成可以被虚拟机直接使用的Java类型</p>
 <h2 id="类加载的过程"><a href="#类加载的过程" class="headerlink" title="类加载的过程"></a>类加载的过程</h2><ul>
-<li>加载</li>
-<li>验证</li>
-<li>准备</li>
-<li>解析</li>
-<li>初始化</li>
+<li><p>加载</p>
+<p>通过一个类的全限定名获取定义此类的二进制字节流，将这个字节流所代表的静态存储结构转换成方法区的运行时数据结构，在内存中生成一个代表这个类的<code>java.lang.Class</code>对象，作为方法区这个类的各种数据的访问入口</p>
+</li>
+<li><p>验证</p>
+<p>确保Class文件的字节流中包含的信息符合当前虚拟机的要求，并且不会危害虚拟机自身的安全</p>
+</li>
+<li><p>准备</p>
+<p>正式为类变量（被static修饰的变量）在方法区中分配内存并设置类变量的<strong>初始值</strong>（基本数据类型的零值，<code>ConstantValue</code>除外）</p>
+</li>
+<li><p>解析</p>
+<p>虚拟机将常量池内的符号引用替换为直接引用</p>
+</li>
+<li><p>初始化</p>
+<p>开始执行类中定义的Java程序代码（字节码）</p>
+</li>
 </ul>
 <h2 id="类加载器"><a href="#类加载器" class="headerlink" title="类加载器"></a>类加载器</h2><h3 id="双亲委派模型"><a href="#双亲委派模型" class="headerlink" title="双亲委派模型"></a>双亲委派模型</h3><p>三种系统提供的类加载器</p>
 <ul>
@@ -638,7 +648,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-count">11</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
