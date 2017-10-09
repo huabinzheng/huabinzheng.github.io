@@ -250,6 +250,344 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/04/15/面向实习面试的复习之Java/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Edward">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Silent Majority">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/04/15/面向实习面试的复习之Java/" itemprop="url">
+                  面向实习面试的复习之Java
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-15T17:38:28+08:00">
+                2017-04-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="Java-C-区别"><a href="#Java-C-区别" class="headerlink" title="Java C++ 区别"></a>Java C++ 区别</h2><ol>
+<li>Java解释型：程序经编译器变成成字节码，由JVM解释执行；C++编译型：源代码经编译与链接后生成可执行二进制代码。</li>
+<li>Java纯面向对象：除基本类型（int,float），所有类型都是类；C++兼具面向过程与面向对象。</li>
+<li>Java无指针概念，程序更安全，避免溢出</li>
+<li>Java不支持多重继承，引入了接口概念；C++多重继承。</li>
+<li>Java提供了垃圾回收器，调用对象的finalize方法；C++开发人员管理内存分配，包括申请与释放（析构）</li>
+<li>Java不支持运算符重载</li>
+<li>Java平台无关：int类型32位</li>
+</ol>
+<h2 id="Java初始化顺序"><a href="#Java初始化顺序" class="headerlink" title="Java初始化顺序"></a>Java初始化顺序</h2><ol>
+<li>静态优于非静态</li>
+<li>父类优于子类</li>
+<li>成员变量按照顺序初始化</li>
+</ol>
+<p>父类静态变量、代码块 -&gt; </p>
+<p>子类静态变量、代码块 -&gt; </p>
+<p>父类非静态变量、代码块 -&gt;</p>
+<p>父类构造函数 -&gt;</p>
+<p>子类非静态变量、代码块 -&gt;</p>
+<p>子类构造函数</p>
+<h2 id="Java作用域"><a href="#Java作用域" class="headerlink" title="Java作用域"></a>Java作用域</h2><ul>
+<li>成员变量：类被实例化，成员变量在内存分配空间并初始化，直至实例化对象生命周期结束</li>
+<li>静态变量（static）：类被加载时</li>
+<li>局部变量：花括号内</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:left"></th>
+<th style="text-align:left">当前类</th>
+<th style="text-align:left">本包</th>
+<th style="text-align:left">子类</th>
+<th style="text-align:left">其他包</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">public</td>
+<td style="text-align:left">√</td>
+<td style="text-align:left">√</td>
+<td style="text-align:left">√</td>
+<td style="text-align:left">√</td>
+</tr>
+<tr>
+<td style="text-align:left">protected</td>
+<td style="text-align:left">√</td>
+<td style="text-align:left">√</td>
+<td style="text-align:left">√</td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">default</td>
+<td style="text-align:left">√</td>
+<td style="text-align:left">√</td>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">private</td>
+<td style="text-align:left">√</td>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
+</tr>
+</tbody>
+</table>
+<h2 id="构造函数"><a href="#构造函数" class="headerlink" title="构造函数"></a>构造函数</h2><p>没有编写构造器时，编译器提供一个无参数构造函数（默认值，数值类型-0，布尔-false，对象-null）</p>
+<p>子类通过super显式调用父类的构造器</p>
+<p>父类没有提供无参数的构造函数时，子类构造器函数必须显式调用父类的构造函数</p>
+<h2 id="clone"><a href="#clone" class="headerlink" title="clone"></a>clone</h2><p>除基本数据按值传递，对象在函数调用与=赋值时采用引用传递</p>
+<p>从已有对象A创建一个相同状态B，且对B修改不影响A，使用clone()<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">class Obj implements Cloneable &#123;</div><div class="line">    public Obj clone() throws CloneNotSupportedException &#123;</div><div class="line">    	return (Obj)super.clone();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>深复制：复制后的对象引用指向新的对象</p>
+<p>浅复制：复制后的对象引用仍然指向原来的对象</p>
+<h2 id="反射机制"><a href="#反射机制" class="headerlink" title="反射机制"></a>反射机制</h2><ul>
+<li>得到一个对象所属的类</li>
+<li>获得一个类的所有成员变量和方法</li>
+<li>运行时创建对象</li>
+<li>运行时调用对象的方法</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">class Base &#123;……&#125;</div><div class="line">class Sub extends Base &#123;……&#125;</div><div class="line"></div><div class="line">try &#123;</div><div class="line">    Class c = Class.forName(&quot;Sub&quot;);</div><div class="line">    Base b = (Base)c.newInstance();</div><div class="line">    b.f();	</div><div class="line">&#125; catch (Exception e)&#123;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="面向对象"><a href="#面向对象" class="headerlink" title="面向对象"></a>面向对象</h2><p>继承、封装、多态</p>
+<h2 id="多态实现机制"><a href="#多态实现机制" class="headerlink" title="多态实现机制"></a>多态实现机制</h2><ul>
+<li>方法重载：同一个类中多个同名方法，不同参数（不同参数个数，不同参数类型，不同参数顺序），编译时多态</li>
+<li>方法覆盖：子类覆盖父类的方法（函数名参数相同，返回值相同，抛出异常一致，被覆盖方法不能是private），运行时多态</li>
+</ul>
+<h2 id="抽象类-extends"><a href="#抽象类-extends" class="headerlink" title="抽象类 extends"></a>抽象类 extends</h2><ul>
+<li>只要包含抽象方法的类必须声明为抽象类，被声明抽象的方法不能包含方法体。</li>
+<li>抽象类使用中不能被实例化，但可以创建对象指向具体子类的一个实例。</li>
+<li>抽象类子类为父类所有抽象方法提供具体实现，否则也是抽象类。</li>
+</ul>
+<h2 id="接口-implements"><a href="#接口-implements" class="headerlink" title="接口 implements"></a>接口 implements</h2><p>接口中所有方法都是抽象</p>
+<h2 id="this-super"><a href="#this-super" class="headerlink" title="this super"></a>this super</h2><ul>
+<li>this指向当前实例对象</li>
+<li>super访问父类方法和成员变量<ul>
+<li>子类构造函数显示调用父类构造函数时，super必须为构造函数中第一句语句</li>
+</ul>
+</li>
+</ul>
+<h2 id="final"><a href="#final" class="headerlink" title="final"></a>final</h2><ul>
+<li>final 修饰类 类不能被继承</li>
+<li>final 修饰方法 方法不能被重写</li>
+<li>final 修饰变量 值不可被修改 （引用不可变）</li>
+</ul>
+<h2 id="static"><a href="#static" class="headerlink" title="static"></a>static</h2><ul>
+<li>static 成员变量：静态变量，为类的所有对象共享</li>
+<li>static 成员方法：不需要创建对象可以被调用</li>
+<li>static 代码块：静态代码块在类被加载时被被调用</li>
+</ul>
+<h2 id="volatile"><a href="#volatile" class="headerlink" title="volatile"></a>volatile</h2><p>volatile 修饰被不同线程访问和修改的变量，每次使用时从内存提取，而不利用缓存；不能保证原子性</p>
+<h2 id="基本数据类型"><a href="#基本数据类型" class="headerlink" title="基本数据类型"></a>基本数据类型</h2><table>
+<thead>
+<tr>
+<th style="text-align:left">类型</th>
+<th style="text-align:left">位长</th>
+<th style="text-align:left">包装类</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">int</td>
+<td style="text-align:left">4 byte / 32 bit</td>
+<td style="text-align:left">Integer</td>
+</tr>
+<tr>
+<td style="text-align:left">short</td>
+<td style="text-align:left">2 byte / 16 bit</td>
+<td style="text-align:left">Short</td>
+</tr>
+<tr>
+<td style="text-align:left">long</td>
+<td style="text-align:left">8 byte / 64 bit</td>
+<td style="text-align:left">Long</td>
+</tr>
+<tr>
+<td style="text-align:left">byte</td>
+<td style="text-align:left">1 byte / 8 bit</td>
+<td style="text-align:left">Byte</td>
+</tr>
+<tr>
+<td style="text-align:left">float</td>
+<td style="text-align:left">4 byte / 32 bit</td>
+<td style="text-align:left">Float</td>
+</tr>
+<tr>
+<td style="text-align:left">double</td>
+<td style="text-align:left">8 byte / 64 bit</td>
+<td style="text-align:left">Double</td>
+</tr>
+<tr>
+<td style="text-align:left">char</td>
+<td style="text-align:left">2 byte / 16 bit</td>
+<td style="text-align:left">Character</td>
+</tr>
+<tr>
+<td style="text-align:left">boolean</td>
+<td style="text-align:left">1 byte / 8 bit</td>
+<td style="text-align:left">Boolean</td>
+</tr>
+</tbody>
+</table>
+<h2 id="不可变类"><a href="#不可变类" class="headerlink" title="不可变类"></a>不可变类</h2><ul>
+<li>基本类型的包装类是不可变类；</li>
+<li>String是不可变类</li>
+</ul>
+<h2 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a>字符串</h2><pre><code>String s1 = new String(&quot;abc&quot;);
+String s2 = new String(&quot;abc&quot;);
+</code></pre><p>内存地址不同</p>
+<pre><code>String s1 = &quot;abc&quot;;String s2 = &quot;abc&quot;;
+</code></pre><p>JVM中字符串池，可以被共享使用。s1,s2引用同一个常量池中对象。<br>new String(“abc”) 创建了一个或者两个对象：常量池中有”abc”，一个；否则，两个。</p>
+<h2 id="equals-hashCode"><a href="#equals-hashCode" class="headerlink" title="== equals hashCode"></a>== equals hashCode</h2><ul>
+<li>==：比较基本类型数据或者两个引用变量是否相等</li>
+<li>equals：String检测两个字符串是否相等</li>
+<li>hashCode：内存中地址转换成int值</li>
+</ul>
+<p>equals true -&gt; hashCode 相同整数</p>
+<p>equals false -&gt; hashCode 可能相等，可能不相等</p>
+<h2 id="String-StringBuilder-StringBuffer"><a href="#String-StringBuilder-StringBuffer" class="headerlink" title="String StringBuilder StringBuffer"></a>String StringBuilder StringBuffer</h2><ul>
+<li>String：不可变类，String对象一旦被创建，其值不能被改变</li>
+<li>StringBuilder：线程非安全的</li>
+<li>StringBuffer：线程安全的，同步</li>
+</ul>
+<h2 id="length-length"><a href="#length-length" class="headerlink" title="length length()"></a>length length()</h2><ul>
+<li>length：获取数组的长度</li>
+<li>length()：计算字符串的长度</li>
+</ul>
+<h2 id="try-catch-finally"><a href="#try-catch-finally" class="headerlink" title="try catch finally"></a>try catch finally</h2><p>try{ }中有return语句，但在return之前会运行finally块里的代码</p>
+<p>finally块中有return语句时，会覆盖函数中其他return语句</p>
+<h2 id="Java-堆与栈"><a href="#Java-堆与栈" class="headerlink" title="Java 堆与栈"></a>Java 堆与栈</h2><ul>
+<li>栈： 基本类型  int, short, long, byte, float, double, boolean, char 以及对象的引用变量</li>
+<li>堆： new创建的对象和数组</li>
+</ul>
+<h2 id="Collections框架"><a href="#Collections框架" class="headerlink" title="Collections框架"></a>Collections框架</h2><p>List, Queue, Set, Stack继承自Collection接口</p>
+<h3 id="接口"><a href="#接口" class="headerlink" title="接口"></a>接口</h3><ul>
+<li>Set : HashSet, TreeSet（有序）</li>
+<li>List : LinkedList， ArrayList, Vector</li>
+<li>Map : HashMap（散列表，hashCode）, TreeMap（红黑树）</li>
+</ul>
+<h3 id="List"><a href="#List" class="headerlink" title="List"></a>List</h3><ul>
+<li>ArrayList 基于数组 随机访问get与set性能优，线程不安全</li>
+<li>LinkedList 基于双向列表 新增与删除add与remove性能优，线程不安全</li>
+<li>Vector 基于数组，线程安全</li>
+</ul>
+<h2 id="HashMap-Hashtable"><a href="#HashMap-Hashtable" class="headerlink" title="HashMap Hashtable"></a>HashMap Hashtable</h2><p>HashMap是Hashtable轻量级实现</p>
+<ul>
+<li>Hashtabl线程安全</li>
+<li>HashMap线程不安全，最多允许一条键值为null；<ul>
+<li>添加键值对，调用key的hashCode方法生成hash值，不存在直接添加；</li>
+<li>存在，找到所有key，调用equals方法比较，true覆盖，false添加；</li>
+<li>冲突，链地址法</li>
+</ul>
+</li>
+<li>ConcurrentHashMap</li>
+</ul>
+<h2 id="Collection-Collections"><a href="#Collection-Collections" class="headerlink" title="Collection Collections"></a>Collection Collections</h2><ul>
+<li>Collection是一个集合接口</li>
+<li>Collections是针对集合类的一个包装类</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">List&lt;Integer&gt; list = new LinkedList&lt;Intger&gt;();</div><div class="line">Collections.sort(list);</div></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/04/14/面向实习面试的复习之排序/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -553,7 +891,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-count">13</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>

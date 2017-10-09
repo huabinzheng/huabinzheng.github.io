@@ -250,6 +250,285 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/08/实战Java虚拟机-JVM故障诊断与性能优化-笔记/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Edward">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Silent Majority">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/10/08/实战Java虚拟机-JVM故障诊断与性能优化-笔记/" itemprop="url">
+                  实战Java虚拟机 JVM故障诊断与性能优化 笔记
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-08T14:33:28+08:00">
+                2017-10-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="第4章-垃圾回收概念与算法"><a href="#第4章-垃圾回收概念与算法" class="headerlink" title="第4章 垃圾回收概念与算法"></a>第4章 垃圾回收概念与算法</h1><h2 id="认识垃圾回收"><a href="#认识垃圾回收" class="headerlink" title="认识垃圾回收"></a>认识垃圾回收</h2><p>GC中的垃圾特指存在于内存中的、不会在被使用的对象。</p>
+<h2 id="常用的垃圾回收算法"><a href="#常用的垃圾回收算法" class="headerlink" title="常用的垃圾回收算法"></a>常用的垃圾回收算法</h2><h3 id="引用计数法"><a href="#引用计数法" class="headerlink" title="引用计数法"></a>引用计数法</h3><p>对于一个对象A，只要有任何一个对象引用了A，则A的引用计数器就加1，当引用失效时，引用计数器就减1。只要对象A的引用计数器的值为0，则对象A就不可能在被使用。</p>
+<p>问题</p>
+<ul>
+<li>无法处理循环引用的情况</li>
+<li>每次因引用产生和消除的时候，需要伴随一个加法操作和减法操作，对系统性能会有一定的影响。</li>
+</ul>
+<h3 id="标记清除法-Mark-Sweep"><a href="#标记清除法-Mark-Sweep" class="headerlink" title="标记清除法 Mark-Sweep"></a>标记清除法 Mark-Sweep</h3><p>标记清除算法将垃圾回收分为两个阶段：标记阶段和清除阶段</p>
+<ul>
+<li>标记阶段：首先通过根节点，标记所有从根节点开始的可达对象。因此，未被标记的对象就是未被引用的垃圾对象。</li>
+<li>清除阶段：清除所有为被标记的对象</li>
+</ul>
+<p>可能产生的最大问题是空间碎片，回收后的空间不不连续的</p>
+<h3 id="复制算法"><a href="#复制算法" class="headerlink" title="复制算法"></a>复制算法</h3><p>将原有的空间内存分为两块，每次只使用其中的一块，在垃圾回收时，将正在使用的内存中的存活对象复制到未使用的内存块中，之后清除正在使用的内存块中的所有对象，交换两个内存块的角色，完成垃圾回收。</p>
+<p>可确保回收后的内存空间是没有碎片的，代价是将系统内存折半。</p>
+<p>在Java新生代串行垃圾回收器重，使用了复制算法的思想。新生代分为eden空间，from空间和to空间三个部分。其中from和to空间可以视为用于复制的两块大小相同、地位相等、且可进行角色互换的空间块。from和to空间也成为survivor空间，用于存放未被回收的对象。</p>
+<p>在垃圾回收时，eden空间中的存活对象会被复制到未使用的survivor空间（假设是to）中，正在使用的survivor空间（假设是from）中的年轻对象也会被复制到to空间中。（大对象，或者老年对象会直接进入老年代，如果to空间已满，则对象也会直接进入老年代）。此时eden空间和from空间中的剩余对象就是垃圾对象，可以直接清空。to空间则存放此次回收后的存活对象。</p>
+<h3 id="标记压缩法（标记整理法）"><a href="#标记压缩法（标记整理法）" class="headerlink" title="标记压缩法（标记整理法）"></a>标记压缩法（标记整理法）</h3><p>复制算法的高效是建立在存活对象少，垃圾对象多的前提下的。但在老年代，更常见的情况是大部分对象都是存活对象。</p>
+<p>标记压缩算法是一种老年代的回收算法，它在标记清除算法的基础上做了一些优化。首先需要从根节点开始，对所有可达对象做一次标记，将所有的存活对象压缩至内存的一端。之后清除边界外的所有空间。这种方法避免了碎片的产生，又不需要两块相同的内存空间。</p>
+<h3 id="分代算法"><a href="#分代算法" class="headerlink" title="分代算法"></a>分代算法</h3><p>新生代比较适合使用复制算法。当一个对象经过几次回收后仍然存活，对象就会被放入老年代的内存空间。对老年带的回收使用标记压缩算法或者标记清除算法。</p>
+<h2 id="判断可触及性"><a href="#判断可触及性" class="headerlink" title="判断可触及性"></a>判断可触及性</h2><h3 id="引用和可触及性的强度"><a href="#引用和可触及性的强度" class="headerlink" title="引用和可触及性的强度"></a>引用和可触及性的强度</h3><h3 id="强引用"><a href="#强引用" class="headerlink" title="强引用"></a>强引用</h3><p>程序中一般使用的引用类型</p>
+<ul>
+<li>强引用可以直接访问目标对象</li>
+<li>强引用所指向的对象在任何时候都不会被系统回收，虚拟机宁愿抛出OOM异常也不会回收强引用所指向对象</li>
+<li>强引用可能导致内存泄漏</li>
+</ul>
+<h3 id="软引用"><a href="#软引用" class="headerlink" title="软引用"></a>软引用</h3><p>一个对象只持有软引用，那么当堆空间不足时，就会被回收。</p>
+<h3 id="弱引用"><a href="#弱引用" class="headerlink" title="弱引用"></a>弱引用</h3><p>在系统GC时，只要发现弱引用，不管系统对空间使用情况如何，都会将对象进行回收。</p>
+<h3 id="虚引用"><a href="#虚引用" class="headerlink" title="虚引用"></a>虚引用</h3><p>当垃圾回收器准备回收一个对象时，如果发现它还有虚引用，就会在回收对象后，将这个虚引用加入引用队列，以通知应用程序对象的回收情况。</p>
+<h1 id="第5章-垃圾收集器和内存分配"><a href="#第5章-垃圾收集器和内存分配" class="headerlink" title="第5章 垃圾收集器和内存分配"></a>第5章 垃圾收集器和内存分配</h1><h2 id="串行回收器"><a href="#串行回收器" class="headerlink" title="串行回收器"></a>串行回收器</h2><p>串行回收期是指使用单线程进行垃圾回收的回收器。</p>
+<h3 id="新生代串行回收器"><a href="#新生代串行回收器" class="headerlink" title="新生代串行回收器"></a>新生代串行回收器</h3><ul>
+<li>仅仅使用单线程进行垃圾回收</li>
+<li>独占式的垃圾回收</li>
+</ul>
+<p>Stop the world：在串行回收器进行垃圾回收时，Java应用程序中的线程都需要暂停，等待垃圾回收的完成。</p>
+<h3 id="老年代串行回收器"><a href="#老年代串行回收器" class="headerlink" title="老年代串行回收器"></a>老年代串行回收器</h3><p>串行的独占式的垃圾回收器</p>
+<h2 id="并行回收器"><a href="#并行回收器" class="headerlink" title="并行回收器"></a>并行回收器</h2><p>使用多个线程同时进行垃圾回收</p>
+<h3 id="新生代ParNew回收器"><a href="#新生代ParNew回收器" class="headerlink" title="新生代ParNew回收器"></a>新生代ParNew回收器</h3><p>简单地将串行回收器多线程化</p>
+<h3 id="新生代ParallelGC回收器"><a href="#新生代ParallelGC回收器" class="headerlink" title="新生代ParallelGC回收器"></a>新生代ParallelGC回收器</h3><p>关注系统的吞吐量</p>
+<h3 id="老年代ParallelOldGC回收器"><a href="#老年代ParallelOldGC回收器" class="headerlink" title="老年代ParallelOldGC回收器"></a>老年代ParallelOldGC回收器</h3><p>多线程并发的收集器</p>
+<h2 id="CMS回收器"><a href="#CMS回收器" class="headerlink" title="CMS回收器"></a>CMS回收器</h2><p>主要关注系统停顿时间，并发标记清除</p>
+<h2 id="主要工作步骤"><a href="#主要工作步骤" class="headerlink" title="主要工作步骤"></a>主要工作步骤</h2><ul>
+<li>初始标记：STW标记根对象</li>
+<li>并发标记：标记所有对象</li>
+<li>预清理：清理前准备以及控制停顿时间（可关闭）</li>
+<li>重新标记：STW修正并发标记数据</li>
+<li>并发清除：清理垃圾</li>
+<li>并发重置</li>
+</ul>
+<p>由于CMS回收器不是独占式的回收器，在CMS回收过程中，应用程序仍然在不停地工作。在应用程序工作过程中，又会不断地产生垃圾。这些新生成的垃圾在当前CMS回收过程中是无法清除的。同时由于应用程序没有中断，所以在CMS回收过程中，还应该确保应用程序有足够的内存可用。因此，CMS回收器不会等待堆内存饱和时才进行垃圾回收，而是当堆内存使用率达到某一阈值（默认是68）时会执行一次CMS回收。</p>
+<p>CMS是一个基于标记清除算法的回收器，会造成大量内存碎片。</p>
+<h2 id="G1回收器"><a href="#G1回收器" class="headerlink" title="G1回收器"></a>G1回收器</h2><p>G1回收器是在JDK1.7中正式使用的全新的垃圾回收器。从分代上来看会区分年轻代和老年代，依然有eden区和survivor区，但从堆的结构上看，它并不要求整个eden区、年轻代或者老年代都连续，它使用了分区算法。</p>
+<h3 id="分区算法"><a href="#分区算法" class="headerlink" title="分区算法"></a>分区算法</h3><p>分区算法将整个堆空间划分成连续的不同小区间。每一个小区间都独立使用，独立回收。为了更好地控制GC产生地停顿时间，将一块大地内存区域分割成多个小块，根据目标的停顿时间，每次合理地回收若干个小区间，而不是整个堆空间，从而减少一次GC所产生的停顿。</p>
+<h3 id="G1的内存划分和主要收集过程"><a href="#G1的内存划分和主要收集过程" class="headerlink" title="G1的内存划分和主要收集过程"></a>G1的内存划分和主要收集过程</h3><p>G1收集器将堆进行分区，划分为一个个的区域，每次收集的时候，只收集其中几个区域，以此来控制垃圾回收产生的一次停顿时间。</p>
+<p>收集过程</p>
+<ul>
+<li>新生代GC</li>
+<li>并发标记周期</li>
+<li>混合收集</li>
+<li>如果需要，可能会进行Full GC</li>
+</ul>
+<h3 id="G1的新生代GC"><a href="#G1的新生代GC" class="headerlink" title="G1的新生代GC"></a>G1的新生代GC</h3><p>主要工作是回收eden区和survivor区。一旦eden区被占满，新生代GC就会启动。</p>
+<p>回收后，所有的eden区都应该被清空，而survivor区会被收集一部分数据，但是应该至少仍然存在一个survivor区。老年代的区域增多，因为部分survivor区或者eden区的对象可能会晋升到老年代。</p>
+<h3 id="G1的并发标记周期"><a href="#G1的并发标记周期" class="headerlink" title="G1的并发标记周期"></a>G1的并发标记周期</h3><ul>
+<li>初始标记</li>
+<li>根区域扫描</li>
+<li>并发标记</li>
+<li>重新标记</li>
+<li>独占清除</li>
+<li>并发清除</li>
+</ul>
+<h3 id="混合回收"><a href="#混合回收" class="headerlink" title="混合回收"></a>混合回收</h3><p>G1优先回收垃圾比例较高的区域。在这个阶段，既会执行正常的年轻代GC，又会选取一些被标记的老年代区域进行回收。</p>
+<h3 id="必要时Full-GC"><a href="#必要时Full-GC" class="headerlink" title="必要时Full GC"></a>必要时Full GC</h3><p>不能完全避免在特别繁忙的场合会出现回收过程中内存不充足的情况，当遇到这种情况时，G1也会转入一个Full GC进行回收。</p>
+<h2 id="有关对象内存分配和回收的一些细节问题"><a href="#有关对象内存分配和回收的一些细节问题" class="headerlink" title="有关对象内存分配和回收的一些细节问题"></a>有关对象内存分配和回收的一些细节问题</h2><h3 id="禁用System-gc"><a href="#禁用System-gc" class="headerlink" title="禁用System.gc()"></a>禁用System.gc()</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">-XX:-+DisableExplicitGC</div></pre></td></tr></table></figure>
+<h3 id="对象何时进入老年代"><a href="#对象何时进入老年代" class="headerlink" title="对象何时进入老年代"></a>对象何时进入老年代</h3><ul>
+<li><p>初创的对象在eden区</p>
+</li>
+<li><p>老年对象进入老年代</p>
+<p>对象的年龄是由对象经历的GC次数决定的。在新生代中的对象每经历一次GC，如果它没有被回收，它的年龄就加1。默认情况下，在新生代的对象最多经历15次GC，就可以晋升到老年代。</p>
+</li>
+<li><p>大对象进入老年代</p>
+</li>
+</ul>
+<h3 id="在TLAB上分配对象"><a href="#在TLAB上分配对象" class="headerlink" title="在TLAB上分配对象"></a>在TLAB上分配对象</h3><p>线程本地分配缓存。TLAB是一个线程专用的内存分配区域，为了加速对象分配而生，本身占用了eden区的空间。在TLAB启用的情况下，虚拟机会为每一个Java线程分配一块TLAB空间。</p>
+<h1 id="第6章-性能监控工具"><a href="#第6章-性能监控工具" class="headerlink" title="第6章 性能监控工具"></a>第6章 性能监控工具</h1><h2 id="JDK性能监控工具"><a href="#JDK性能监控工具" class="headerlink" title="JDK性能监控工具"></a>JDK性能监控工具</h2><ul>
+<li>jps：查看Java进程</li>
+<li>jstat：查看虚拟机运行时信息</li>
+<li>jinfo：查看虚拟机参数</li>
+<li>jmap：导出堆到文件</li>
+<li>jhat：JDK自带的堆分析工具</li>
+<li>jstatck：查看线程堆栈</li>
+<li>jstatd：远程主机信息收集</li>
+<li>jcmd：多功能命令行</li>
+<li>hprof：性能统计工具</li>
+</ul>
+<h1 id="第8章-锁与并发"><a href="#第8章-锁与并发" class="headerlink" title="第8章 锁与并发"></a>第8章 锁与并发</h1><h1 id="锁的基本概念和实现"><a href="#锁的基本概念和实现" class="headerlink" title="锁的基本概念和实现"></a>锁的基本概念和实现</h1><h3 id="对象头和锁"><a href="#对象头和锁" class="headerlink" title="对象头和锁"></a>对象头和锁</h3><p>在Java虚拟机的实现中每个对象都有一个对象头，用于保存对象的系统信息。对象头中有一个称为Mark Word的部分，它是实现锁的关键。一个对象是否占用锁，占有哪个锁，就记录在这个Mark Word中。</p>
+<h2 id="锁在Java虚拟机中的实现和优化"><a href="#锁在Java虚拟机中的实现和优化" class="headerlink" title="锁在Java虚拟机中的实现和优化"></a>锁在Java虚拟机中的实现和优化</h2><h3 id="偏向锁"><a href="#偏向锁" class="headerlink" title="偏向锁"></a>偏向锁</h3><p>若某一锁被线程获取后，便进入偏向模式。当线程再次请求这个锁时，无需再进行相关的同步操作，从而节省了操作时间。如果在此之间有其他线程进行了锁请求，则锁退出偏向模式。</p>
+<h3 id="轻量级锁"><a href="#轻量级锁" class="headerlink" title="轻量级锁"></a>轻量级锁</h3><p>如果偏向锁失败，Java虚拟机会让线程申请轻量级锁。当需要判断某一线程是否持有该对象锁时，只需简单地判断对象头的指针是否在当前线程的栈地址范围内即可。</p>
+<h3 id="锁膨胀"><a href="#锁膨胀" class="headerlink" title="锁膨胀"></a>锁膨胀</h3><p>当轻量级锁失败，虚拟机就会使用重量级锁。</p>
+<h3 id="自旋锁"><a href="#自旋锁" class="headerlink" title="自旋锁"></a>自旋锁</h3><p>在锁膨胀后，虚拟机会使用自旋锁。自旋锁可以使线程在没有获得锁时不被挂起，而转而去执行一个空循环。在若干个空循环后，线程如果可以获得锁，则继续执行。若线程依然不能获得锁，才会被挂起。</p>
+<h3 id="锁消除"><a href="#锁消除" class="headerlink" title="锁消除"></a>锁消除</h3><p>Java虚拟机在JIT编译时，通过对运行上下文的扫描，去除不能存在共享资源竞争的锁。</p>
+<h2 id="锁在应用层的优化思路"><a href="#锁在应用层的优化思路" class="headerlink" title="锁在应用层的优化思路"></a>锁在应用层的优化思路</h2><ul>
+<li>减少锁持有时间</li>
+<li>减小锁粒度</li>
+<li>锁分离</li>
+<li>锁粗化</li>
+</ul>
+<h2 id="无锁"><a href="#无锁" class="headerlink" title="无锁"></a>无锁</h2><h3 id="CAS"><a href="#CAS" class="headerlink" title="CAS"></a>CAS</h3><p>包含三个参数CAS(V, E, N)。V表示要更新的变量，E表示预期值，N表示新值。仅当V值等于E值时，才会将V的值设为N。如果V值和E值不同，则说明已经有其他线程做了更新，则当前线程什么都不做。最后CAS返回当前V的真实值。</p>
+<h2 id="理解Java内存模型"><a href="#理解Java内存模型" class="headerlink" title="理解Java内存模型"></a>理解Java内存模型</h2><ul>
+<li>原子性</li>
+<li>有序性</li>
+<li>可见性</li>
+<li>Happens-Before原则</li>
+</ul>
+<h1 id="第10章-Class装载系统"><a href="#第10章-Class装载系统" class="headerlink" title="第10章 Class装载系统"></a>第10章 Class装载系统</h1><h2 id="Class文件的装载流程"><a href="#Class文件的装载流程" class="headerlink" title="Class文件的装载流程"></a>Class文件的装载流程</h2><ul>
+<li>加载</li>
+<li>连接<ul>
+<li>验证</li>
+<li>准备</li>
+<li>解析</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>初始化</li>
+</ul>
+<h3 id="装载类的条件"><a href="#装载类的条件" class="headerlink" title="装载类的条件"></a>装载类的条件</h3><p>一个类或接口在初次使用（主动使用）前，必须要进行初始化。</p>
+<ul>
+<li>创建一个类的实例时，使用new关键字，或者通过反射、克隆、反序列化</li>
+<li>调用类的静态方法时</li>
+<li>使用类或接口的静态字段时（final常量除外）</li>
+<li>使用java.lang.reflect包的方法反射类的方法时</li>
+<li>初始化子类，要求先初始化父类</li>
+<li>作为启动虚拟机，含有main()方法的那个类</li>
+</ul>
+<h3 id="加载类"><a href="#加载类" class="headerlink" title="加载类"></a>加载类</h3><ul>
+<li>通过类的全名，获取类的二进制数据流</li>
+<li>解析类的二进制数据流为方法区内的数据结构</li>
+<li>创建java.lang.Class类的实例，表示该类型</li>
+</ul>
+<h3 id="验证类"><a href="#验证类" class="headerlink" title="验证类"></a>验证类</h3><p>保证加载的字节码时合法、合理并符合规范的</p>
+<ul>
+<li>格式检查</li>
+<li>语义检查</li>
+<li>字节码验证</li>
+<li>符号引用验证</li>
+</ul>
+<h3 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h3><p>虚拟机为这个类分配相应的内存空间，并设置初始值。如果类存在常量字段，那么常量字段也会在准备阶段被附上正确的值。</p>
+<h3 id="解析类"><a href="#解析类" class="headerlink" title="解析类"></a>解析类</h3><p>将类、接口、字段和方法的符号引用转为直接引用。</p>
+<h3 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h3><p>执行类的初始化方法<clinit>，它是由编译器自动生成的，有类静态成员的赋值语句以及static语句块合并产生的。</clinit></p>
+<h2 id="ClassLoader"><a href="#ClassLoader" class="headerlink" title="ClassLoader"></a>ClassLoader</h2><h2 id="类加载"><a href="#类加载" class="headerlink" title="类加载"></a>类加载</h2><h3 id="ClassLoader的分类"><a href="#ClassLoader的分类" class="headerlink" title="ClassLoader的分类"></a>ClassLoader的分类</h3><p>ClassLoader的层次自定往下</p>
+<ul>
+<li>启动类加载器：完全由C代码实现</li>
+<li>拓展类加载器</li>
+<li>应用类加载器（系统类加载器）</li>
+<li>自定义类加载器</li>
+</ul>
+<p>当系统需要使用一个类时，在判断类是否已经被加载时，会先从当前底层类加载进行判断。当系统需要加载一个类时，会从顶层类开始加载，以此向下尝试，直至成功。</p>
+<h3 id="双亲委托模式"><a href="#双亲委托模式" class="headerlink" title="双亲委托模式"></a>双亲委托模式</h3><p>类加载时，系统会判断当前类是否已经被加载，如果已经被加载，就会直接返回可用的类，否则就会尝试加载。在尝试加载时，会先请双亲处理，如果双亲请求失败，则会自己加载。</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/06/实战Java高并发程序设计-笔记/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2060,344 +2339,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/04/15/面向实习面试的复习之Java/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Edward">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Silent Majority">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/04/15/面向实习面试的复习之Java/" itemprop="url">
-                  面向实习面试的复习之Java
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-15T17:38:28+08:00">
-                2017-04-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="Java-C-区别"><a href="#Java-C-区别" class="headerlink" title="Java C++ 区别"></a>Java C++ 区别</h2><ol>
-<li>Java解释型：程序经编译器变成成字节码，由JVM解释执行；C++编译型：源代码经编译与链接后生成可执行二进制代码。</li>
-<li>Java纯面向对象：除基本类型（int,float），所有类型都是类；C++兼具面向过程与面向对象。</li>
-<li>Java无指针概念，程序更安全，避免溢出</li>
-<li>Java不支持多重继承，引入了接口概念；C++多重继承。</li>
-<li>Java提供了垃圾回收器，调用对象的finalize方法；C++开发人员管理内存分配，包括申请与释放（析构）</li>
-<li>Java不支持运算符重载</li>
-<li>Java平台无关：int类型32位</li>
-</ol>
-<h2 id="Java初始化顺序"><a href="#Java初始化顺序" class="headerlink" title="Java初始化顺序"></a>Java初始化顺序</h2><ol>
-<li>静态优于非静态</li>
-<li>父类优于子类</li>
-<li>成员变量按照顺序初始化</li>
-</ol>
-<p>父类静态变量、代码块 -&gt; </p>
-<p>子类静态变量、代码块 -&gt; </p>
-<p>父类非静态变量、代码块 -&gt;</p>
-<p>父类构造函数 -&gt;</p>
-<p>子类非静态变量、代码块 -&gt;</p>
-<p>子类构造函数</p>
-<h2 id="Java作用域"><a href="#Java作用域" class="headerlink" title="Java作用域"></a>Java作用域</h2><ul>
-<li>成员变量：类被实例化，成员变量在内存分配空间并初始化，直至实例化对象生命周期结束</li>
-<li>静态变量（static）：类被加载时</li>
-<li>局部变量：花括号内</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th style="text-align:left"></th>
-<th style="text-align:left">当前类</th>
-<th style="text-align:left">本包</th>
-<th style="text-align:left">子类</th>
-<th style="text-align:left">其他包</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left">public</td>
-<td style="text-align:left">√</td>
-<td style="text-align:left">√</td>
-<td style="text-align:left">√</td>
-<td style="text-align:left">√</td>
-</tr>
-<tr>
-<td style="text-align:left">protected</td>
-<td style="text-align:left">√</td>
-<td style="text-align:left">√</td>
-<td style="text-align:left">√</td>
-<td style="text-align:left"></td>
-</tr>
-<tr>
-<td style="text-align:left">default</td>
-<td style="text-align:left">√</td>
-<td style="text-align:left">√</td>
-<td style="text-align:left"></td>
-<td style="text-align:left"></td>
-</tr>
-<tr>
-<td style="text-align:left">private</td>
-<td style="text-align:left">√</td>
-<td style="text-align:left"></td>
-<td style="text-align:left"></td>
-<td style="text-align:left"></td>
-</tr>
-</tbody>
-</table>
-<h2 id="构造函数"><a href="#构造函数" class="headerlink" title="构造函数"></a>构造函数</h2><p>没有编写构造器时，编译器提供一个无参数构造函数（默认值，数值类型-0，布尔-false，对象-null）</p>
-<p>子类通过super显式调用父类的构造器</p>
-<p>父类没有提供无参数的构造函数时，子类构造器函数必须显式调用父类的构造函数</p>
-<h2 id="clone"><a href="#clone" class="headerlink" title="clone"></a>clone</h2><p>除基本数据按值传递，对象在函数调用与=赋值时采用引用传递</p>
-<p>从已有对象A创建一个相同状态B，且对B修改不影响A，使用clone()<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">class Obj implements Cloneable &#123;</div><div class="line">    public Obj clone() throws CloneNotSupportedException &#123;</div><div class="line">    	return (Obj)super.clone();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>深复制：复制后的对象引用指向新的对象</p>
-<p>浅复制：复制后的对象引用仍然指向原来的对象</p>
-<h2 id="反射机制"><a href="#反射机制" class="headerlink" title="反射机制"></a>反射机制</h2><ul>
-<li>得到一个对象所属的类</li>
-<li>获得一个类的所有成员变量和方法</li>
-<li>运行时创建对象</li>
-<li>运行时调用对象的方法</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">class Base &#123;……&#125;</div><div class="line">class Sub extends Base &#123;……&#125;</div><div class="line"></div><div class="line">try &#123;</div><div class="line">    Class c = Class.forName(&quot;Sub&quot;);</div><div class="line">    Base b = (Base)c.newInstance();</div><div class="line">    b.f();	</div><div class="line">&#125; catch (Exception e)&#123;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h2 id="面向对象"><a href="#面向对象" class="headerlink" title="面向对象"></a>面向对象</h2><p>继承、封装、多态</p>
-<h2 id="多态实现机制"><a href="#多态实现机制" class="headerlink" title="多态实现机制"></a>多态实现机制</h2><ul>
-<li>方法重载：同一个类中多个同名方法，不同参数（不同参数个数，不同参数类型，不同参数顺序），编译时多态</li>
-<li>方法覆盖：子类覆盖父类的方法（函数名参数相同，返回值相同，抛出异常一致，被覆盖方法不能是private），运行时多态</li>
-</ul>
-<h2 id="抽象类-extends"><a href="#抽象类-extends" class="headerlink" title="抽象类 extends"></a>抽象类 extends</h2><ul>
-<li>只要包含抽象方法的类必须声明为抽象类，被声明抽象的方法不能包含方法体。</li>
-<li>抽象类使用中不能被实例化，但可以创建对象指向具体子类的一个实例。</li>
-<li>抽象类子类为父类所有抽象方法提供具体实现，否则也是抽象类。</li>
-</ul>
-<h2 id="接口-implements"><a href="#接口-implements" class="headerlink" title="接口 implements"></a>接口 implements</h2><p>接口中所有方法都是抽象</p>
-<h2 id="this-super"><a href="#this-super" class="headerlink" title="this super"></a>this super</h2><ul>
-<li>this指向当前实例对象</li>
-<li>super访问父类方法和成员变量<ul>
-<li>子类构造函数显示调用父类构造函数时，super必须为构造函数中第一句语句</li>
-</ul>
-</li>
-</ul>
-<h2 id="final"><a href="#final" class="headerlink" title="final"></a>final</h2><ul>
-<li>final 修饰类 类不能被继承</li>
-<li>final 修饰方法 方法不能被重写</li>
-<li>final 修饰变量 值不可被修改 （引用不可变）</li>
-</ul>
-<h2 id="static"><a href="#static" class="headerlink" title="static"></a>static</h2><ul>
-<li>static 成员变量：静态变量，为类的所有对象共享</li>
-<li>static 成员方法：不需要创建对象可以被调用</li>
-<li>static 代码块：静态代码块在类被加载时被被调用</li>
-</ul>
-<h2 id="volatile"><a href="#volatile" class="headerlink" title="volatile"></a>volatile</h2><p>volatile 修饰被不同线程访问和修改的变量，每次使用时从内存提取，而不利用缓存；不能保证原子性</p>
-<h2 id="基本数据类型"><a href="#基本数据类型" class="headerlink" title="基本数据类型"></a>基本数据类型</h2><table>
-<thead>
-<tr>
-<th style="text-align:left">类型</th>
-<th style="text-align:left">位长</th>
-<th style="text-align:left">包装类</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left">int</td>
-<td style="text-align:left">4 byte / 32 bit</td>
-<td style="text-align:left">Integer</td>
-</tr>
-<tr>
-<td style="text-align:left">short</td>
-<td style="text-align:left">2 byte / 16 bit</td>
-<td style="text-align:left">Short</td>
-</tr>
-<tr>
-<td style="text-align:left">long</td>
-<td style="text-align:left">8 byte / 64 bit</td>
-<td style="text-align:left">Long</td>
-</tr>
-<tr>
-<td style="text-align:left">byte</td>
-<td style="text-align:left">1 byte / 8 bit</td>
-<td style="text-align:left">Byte</td>
-</tr>
-<tr>
-<td style="text-align:left">float</td>
-<td style="text-align:left">4 byte / 32 bit</td>
-<td style="text-align:left">Float</td>
-</tr>
-<tr>
-<td style="text-align:left">double</td>
-<td style="text-align:left">8 byte / 64 bit</td>
-<td style="text-align:left">Double</td>
-</tr>
-<tr>
-<td style="text-align:left">char</td>
-<td style="text-align:left">2 byte / 16 bit</td>
-<td style="text-align:left">Character</td>
-</tr>
-<tr>
-<td style="text-align:left">boolean</td>
-<td style="text-align:left">1 byte / 8 bit</td>
-<td style="text-align:left">Boolean</td>
-</tr>
-</tbody>
-</table>
-<h2 id="不可变类"><a href="#不可变类" class="headerlink" title="不可变类"></a>不可变类</h2><ul>
-<li>基本类型的包装类是不可变类；</li>
-<li>String是不可变类</li>
-</ul>
-<h2 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a>字符串</h2><pre><code>String s1 = new String(&quot;abc&quot;);
-String s2 = new String(&quot;abc&quot;);
-</code></pre><p>内存地址不同</p>
-<pre><code>String s1 = &quot;abc&quot;;String s2 = &quot;abc&quot;;
-</code></pre><p>JVM中字符串池，可以被共享使用。s1,s2引用同一个常量池中对象。<br>new String(“abc”) 创建了一个或者两个对象：常量池中有”abc”，一个；否则，两个。</p>
-<h2 id="equals-hashCode"><a href="#equals-hashCode" class="headerlink" title="== equals hashCode"></a>== equals hashCode</h2><ul>
-<li>==：比较基本类型数据或者两个引用变量是否相等</li>
-<li>equals：String检测两个字符串是否相等</li>
-<li>hashCode：内存中地址转换成int值</li>
-</ul>
-<p>equals true -&gt; hashCode 相同整数</p>
-<p>equals false -&gt; hashCode 可能相等，可能不相等</p>
-<h2 id="String-StringBuilder-StringBuffer"><a href="#String-StringBuilder-StringBuffer" class="headerlink" title="String StringBuilder StringBuffer"></a>String StringBuilder StringBuffer</h2><ul>
-<li>String：不可变类，String对象一旦被创建，其值不能被改变</li>
-<li>StringBuilder：线程非安全的</li>
-<li>StringBuffer：线程安全的，同步</li>
-</ul>
-<h2 id="length-length"><a href="#length-length" class="headerlink" title="length length()"></a>length length()</h2><ul>
-<li>length：获取数组的长度</li>
-<li>length()：计算字符串的长度</li>
-</ul>
-<h2 id="try-catch-finally"><a href="#try-catch-finally" class="headerlink" title="try catch finally"></a>try catch finally</h2><p>try{ }中有return语句，但在return之前会运行finally块里的代码</p>
-<p>finally块中有return语句时，会覆盖函数中其他return语句</p>
-<h2 id="Java-堆与栈"><a href="#Java-堆与栈" class="headerlink" title="Java 堆与栈"></a>Java 堆与栈</h2><ul>
-<li>栈： 基本类型  int, short, long, byte, float, double, boolean, char 以及对象的引用变量</li>
-<li>堆： new创建的对象和数组</li>
-</ul>
-<h2 id="Collections框架"><a href="#Collections框架" class="headerlink" title="Collections框架"></a>Collections框架</h2><p>List, Queue, Set, Stack继承自Collection接口</p>
-<h3 id="接口"><a href="#接口" class="headerlink" title="接口"></a>接口</h3><ul>
-<li>Set : HashSet, TreeSet（有序）</li>
-<li>List : LinkedList， ArrayList, Vector</li>
-<li>Map : HashMap（散列表，hashCode）, TreeMap（红黑树）</li>
-</ul>
-<h3 id="List"><a href="#List" class="headerlink" title="List"></a>List</h3><ul>
-<li>ArrayList 基于数组 随机访问get与set性能优，线程不安全</li>
-<li>LinkedList 基于双向列表 新增与删除add与remove性能优，线程不安全</li>
-<li>Vector 基于数组，线程安全</li>
-</ul>
-<h2 id="HashMap-Hashtable"><a href="#HashMap-Hashtable" class="headerlink" title="HashMap Hashtable"></a>HashMap Hashtable</h2><p>HashMap是Hashtable轻量级实现</p>
-<ul>
-<li>Hashtabl线程安全</li>
-<li>HashMap线程不安全，最多允许一条键值为null；<ul>
-<li>添加键值对，调用key的hashCode方法生成hash值，不存在直接添加；</li>
-<li>存在，找到所有key，调用equals方法比较，true覆盖，false添加；</li>
-<li>冲突，链地址法</li>
-</ul>
-</li>
-<li>ConcurrentHashMap</li>
-</ul>
-<h2 id="Collection-Collections"><a href="#Collection-Collections" class="headerlink" title="Collection Collections"></a>Collection Collections</h2><ul>
-<li>Collection是一个集合接口</li>
-<li>Collections是针对集合类的一个包装类</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">List&lt;Integer&gt; list = new LinkedList&lt;Intger&gt;();</div><div class="line">Collections.sort(list);</div></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -2447,7 +2388,7 @@ String s2 = new String(&quot;abc&quot;);
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-count">13</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
