@@ -250,6 +250,239 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/18/Kafka权威指南-笔记/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Edward">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Silent Majority">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2018/03/18/Kafka权威指南-笔记/" itemprop="url">
+                  Kafka权威指南 笔记
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-18T21:41:46+08:00">
+                2018-03-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>实习的这两个多月基于Kafka开发系统，主要学习参考了Kafka权威指南这本书籍。正好也是第一次看原版的技术书籍，针对最重要的几个章节记录一下笔记。</p>
+<h1 id="Chapter-3-Kafka-Producers"><a href="#Chapter-3-Kafka-Producers" class="headerlink" title="Chapter 3 Kafka Producers"></a>Chapter 3 Kafka Producers</h1><h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><p>通过创建一个<code>ProducerRecord</code>向Kafka发布消息，必须包括topic和value，可选指明key和/或者partition。</p>
+<ol>
+<li>发布者会先序列化key和value对象成<code>ByteArrays</code>以便在网络上传递。</li>
+<li>数据被传递给partitioner。如果指定了partition，partitioner不会有任何操作并返回指定的partition。如果没有指定，partition会基于key选择一个partition。一旦选择了partition后，producer将会知道record发往的topic和partition，然后将在一批发往同一topic和partition的records中加入record。一个独立的线程负责把这些成批的records发往合适的Kafka集群。</li>
+<li>集群收到消息，将会返回一个响应。如果消息成功写入Kafka，它会返回一个包含topic，partition和offset的<code>RecordMetadata</code>对象。如果消息写入失败，它会返回一个error。当producer收到一个error，它可能会在放弃返回error前重试几次发送消息。</li>
+</ol>
+<h2 id="Constructing-a-Kafka-Producer"><a href="#Constructing-a-Kafka-Producer" class="headerlink" title="Constructing a Kafka Producer"></a>Constructing a Kafka Producer</h2><ul>
+<li>bootstrap.servers</li>
+<li>key.serializer</li>
+<li>value.serializer</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">private</span> Properties kafkaProps = <span class="keyword">new</span> Properties();</div><div class="line">kafkaProps.put(<span class="string">"bootstrap.servers"</span>, <span class="string">"broker1:9092,broker2:9092"</span>);</div><div class="line">kafkaProps.put(<span class="string">"key.serializer"</span>,<span class="string">"org.apache.kafka.common.serialization.StringSerializer"</span>);</div><div class="line">kafkaProps.put(<span class="string">"value.serializer"</span>,<span class="string">"org.apache.kafka.common.serialization.StringSerializer"</span>);</div><div class="line">producer = <span class="keyword">new</span> KafkaProducer&lt;String, String&gt;(kafkaProps);</div></pre></td></tr></table></figure>
+<p>创建了producer后，开始发送消息。主要有三种发送消息的方法</p>
+<ul>
+<li><p>Fire-and-forget</p>
+<p>发送消息到服务器并不在意是否成功到达，一些消息可能丢失</p>
+</li>
+<li><p>Synchronous send</p>
+<p><code>send()</code>方法返回一个<code>Future</code>对象，使用<code>get()</code>方法等待future查看send是否成功</p>
+</li>
+<li><p>Asynchronous send</p>
+<p>与<code>send()</code>一起使用callback函数，当收到Kafka集群响应后被出发</p>
+</li>
+</ul>
+<h2 id="Sending-a-Message-to-Kafka"><a href="#Sending-a-Message-to-Kafka" class="headerlink" title="Sending a Message to Kafka"></a>Sending a Message to Kafka</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">ProducerRecord&lt;String, String&gt; record = <span class="keyword">new</span> ProducerRecord&lt;&gt;(<span class="string">"CustomerCountry"</span>, <span class="string">"Precision Products"</span>, <span class="string">"France"</span>);</div><div class="line"><span class="keyword">try</span> &#123;</div><div class="line">  producer.send(record);</div><div class="line">&#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">  e.printStackTrace();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="Sending-a-Message-Synchronously"><a href="#Sending-a-Message-Synchronously" class="headerlink" title="Sending a Message Synchronously"></a>Sending a Message Synchronously</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">ProducerRecord&lt;String, String&gt; record = <span class="keyword">new</span> ProducerRecord&lt;&gt;(<span class="string">"CustomerCountry"</span>, <span class="string">"Precision Products"</span>, <span class="string">"France"</span>);</div><div class="line"><span class="keyword">try</span> &#123;</div><div class="line">  producer.send(record).get();</div><div class="line">&#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">  e.printStackTrace();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="Sending-a-Message-Asynchronously"><a href="#Sending-a-Message-Asynchronously" class="headerlink" title="Sending a Message Asynchronously"></a>Sending a Message Asynchronously</h2><p>同步发送消息可能导致延迟，同时我们需要知道是否成功</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">DemoProducerCallback</span> <span class="keyword">implements</span> <span class="title">Callback</span> </span>&#123;</div><div class="line">  <span class="meta">@Override</span></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCompletion</span><span class="params">(RecordMetadata recordMetadata, Exception e)</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span> (e != <span class="keyword">null</span>) &#123;</div><div class="line">      e.printStackTrace();</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line">ProducerRecord&lt;String, String&gt; record = <span class="keyword">new</span> ProducerRecord&lt;&gt;(<span class="string">"CustomerCountry"</span>, <span class="string">"Biomedical Materials"</span>, <span class="string">"USA"</span>);</div><div class="line">producer.send(record, <span class="keyword">new</span> DemoProducerCallback());</div></pre></td></tr></table></figure>
+<h2 id="Configuring-Producers"><a href="#Configuring-Producers" class="headerlink" title="Configuring Producers"></a>Configuring Producers</h2><ul>
+<li><p>acks</p>
+<ul>
+<li>ack=0：producer不会等待broker的响应，高吞吐率但不能得知消息是否丢失</li>
+<li>ack=1：producer在leader replica收到消息时得到来自broker的成功响应。如果消息不能被写入leader，producer会收到error响应并重试发送消息避免消息丢失。</li>
+<li>ack=all：producer在所有in-sync replica收到消息时得到来自broker的成功响应，延迟高</li>
+</ul>
+</li>
+<li><p>buffer.memory</p>
+<p>设置producer用于缓存等待发往broker消息的缓存大小</p>
+</li>
+<li><p>compression.type</p>
+<p>默认消息未被压缩发送</p>
+</li>
+<li><p>retries</p>
+<p>放弃并通知问题前重试发送消息的次数</p>
+</li>
+<li><p>batch.size</p>
+<p>当多个records被发往同一partition，producer将会分批发送。控制用于每一批消息内存大小的bytes数量。批次满时，批次内消息会被发送，但这未必意味着producer会等待批次满再发送。</p>
+</li>
+<li><p>linger.ms</p>
+<p>发送当前批次消息前等待额外消息的时间。<code>KafkaProducer</code>在当前批次消息满或者到达<code>linger.ms</code>限制时发送一批消息。默认在一有可用发送消息线程时就发送消息。</p>
+</li>
+<li><p>max.request.size</p>
+<p>producer发送请求的大小——最大可发送消息的大小和一次请求中可以发送消息的数量</p>
+</li>
+</ul>
+<h2 id="Partitions"><a href="#Partitions" class="headerlink" title="Partitions"></a>Partitions</h2><p>只使用topic和value创建<code>ProducerRecord</code>时，key被默认设置未null。Key有两个作用：与消息一起存储的额外信息并用于决定信息被写往的topic partition。所有相同key的消息将到相同的partition中，意味着如果一个进程只读取topic partitions的一个子集时，所有单个key的记录将被同个进程读取。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ProducerRecord&lt;Integer, String&gt; record = <span class="keyword">new</span> ProducerRecord&lt;&gt;(<span class="string">"CustomerCountry"</span>, <span class="string">"Laboratory Equipment"</span>, <span class="string">"USA"</span>);</div></pre></td></tr></table></figure>
+<p>当key为null，将会使用默认的partitioner，记录会被随机发送可用的partition之一。轮询算法被用于partitions之间消息的平衡。当key存在且默认的partitioner被使用时，Kafka使用自己的hash算法对key进行hash，使用结果映射消息到特定的partition。因为一个key总是映射到同一partition，使用topic中所有partition计算映射，而不是可用的partitions。只有当topic的partition数量不变时，keys到partitions的映射是不变的。当topic中加入新的partition，新的记录会被写往不同的partition中。</p>
+<h1 id="Chapter-4-Kafka-Consumers"><a href="#Chapter-4-Kafka-Consumers" class="headerlink" title="Chapter 4 Kafka Consumers"></a>Chapter 4 Kafka Consumers</h1><h1 id="Kafka-Consumer-Concepts"><a href="#Kafka-Consumer-Concepts" class="headerlink" title="Kafka Consumer Concepts"></a>Kafka Consumer Concepts</h1><h2 id="Consumers-and-Consumer-Groups"><a href="#Consumers-and-Consumer-Groups" class="headerlink" title="Consumers and Consumer Groups"></a>Consumers and Consumer Groups</h2><p>Kafka consumers是consumer group的一部分。当同一consumer group中的多个consumers订阅了一个topic时，组内的每一个consumer将会收到topic不同partition子集的消息。</p>
+<ul>
+<li><p>Partition Num &gt; Consumer Num (1)</p>
+<p>consumer会收到所有partition的消息</p>
+</li>
+<li><p>Partition Num &gt; Consumer Num (&gt; 1)</p>
+<p>每一个consumer收到不同的partition子集的消息</p>
+</li>
+<li><p>Partition Num = Consumer Num</p>
+<p>每一个consumer收到一个parition的消息</p>
+</li>
+<li><p>Partition Num &lt; Consumer Num</p>
+<p>部分consume收不到消息</p>
+</li>
+<li><p>consumer group num &gt; 1</p>
+<p>每一个组会单独收到partition所有的消息，组内负载均衡</p>
+</li>
+</ul>
+<h2 id="Consumer-Groups-and-Partition-Rebalance"><a href="#Consumer-Groups-and-Partition-Rebalance" class="headerlink" title="Consumer Groups and Partition Rebalance"></a>Consumer Groups and Partition Rebalance</h2><p>组内添加一个新的consumer或者一个consumer关闭或者崩溃时，会开始消费其他consumer之前消费的partition。从一个consumer移动partition的归属到另一个consumer叫做再平衡。再平衡时整个consumer group会暂时不可用。Consumer通过发送心跳到Kafka称为group coordinator的broker保持在一个consumer group的成员归属以及partition的归属。只要consumer以规律的时间间隔发送心跳，它就被认为是存活的并从partition处理消息。Consumer poll时发送消息，已经消费了就commit record。一旦consumer足够长时间内停止发送心跳，session就会超时，group coordinator就会认为它死亡并出发再平衡。新版本中有独立的心跳线程再poll之间发送心跳，允许分离心跳频率和poll的频率。</p>
+<h2 id="Creating-a-Kafka-Consumer"><a href="#Creating-a-Kafka-Consumer" class="headerlink" title="Creating a Kafka Consumer"></a>Creating a Kafka Consumer</h2><ul>
+<li>bootstrap.servers</li>
+<li>key.deserializer</li>
+<li>value.deserializer</li>
+<li>group.id 非必需</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">Properties props = <span class="keyword">new</span> Properties();</div><div class="line">props.put(<span class="string">"bootstrap.servers"</span>, <span class="string">"broker1:9092,broker2:9092"</span>);</div><div class="line">props.put(<span class="string">"group.id"</span>, <span class="string">"CountryCounter"</span>);</div><div class="line">props.put(<span class="string">"key.deserializer"</span>, <span class="string">"org.apache.kafka.common.serialization.StringDeserializer"</span>);</div><div class="line">props.put(<span class="string">"value.deserializer"</span>,<span class="string">"org.apache.kafka.common.serialization.StringDeserializer"</span>);</div><div class="line">KafkaConsumer&lt;String, String&gt; consumer = <span class="keyword">new</span> KafkaConsumer&lt;String, String&gt;(props);</div></pre></td></tr></table></figure>
+<h2 id="Subscribing-to-Topics"><a href="#Subscribing-to-Topics" class="headerlink" title="Subscribing to Topics"></a>Subscribing to Topics</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">consumer.subscribe(Collections.singletonList(<span class="string">"customerCountries"</span>));</div><div class="line">consumer.subscribe(<span class="string">"test.*"</span>);</div></pre></td></tr></table></figure>
+<h2 id="The-Poll-Loop"><a href="#The-Poll-Loop" class="headerlink" title="The Poll Loop"></a>The Poll Loop</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">try</span> &#123;</div><div class="line">    <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</div><div class="line">        ConsumerRecords&lt;String, String&gt; records = consumer.poll(<span class="number">100</span>);</div><div class="line">        <span class="keyword">for</span> (ConsumerRecord&lt;String, String&gt; record : records) &#123;</div><div class="line">            log.debug(<span class="string">"topic = %s, partition = %s, offset = %d,customer = %s, country = %s\n"</span>,</div><div class="line">                      record.topic(), record.partition(), record.offset(), record.key(), 						record.value());</div><div class="line"> 			<span class="keyword">int</span> updatedCount = <span class="number">1</span>;</div><div class="line"> 			<span class="keyword">if</span> (custCountryMap.countainsValue(record.value())) &#123;</div><div class="line"> 				updatedCount = custCountryMap.get(record.value()) + <span class="number">1</span>;</div><div class="line"> 			&#125;</div><div class="line"> 			custCountryMap.put(record.value(), updatedCount)</div><div class="line"> 			JSONObject json = <span class="keyword">new</span> JSONObject(custCountryMap);</div><div class="line"> 			System.out.println(json.toString(<span class="number">4</span>))</div><div class="line"> 		&#125;</div><div class="line"> 	&#125;</div><div class="line">&#125; <span class="keyword">finally</span> &#123;</div><div class="line">    consumer.close();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>第一次使用新的consumer调用<code>poll()</code>时，负责找到<code>GroupCoordinator</code>，加入consumer group，收到partition的分配。</p>
+<h3 id="Thread-safe"><a href="#Thread-safe" class="headerlink" title="Thread safe"></a>Thread safe</h3><p>One consumer per thread is the rule.</p>
+<h2 id="Configuring-Consumers"><a href="#Configuring-Consumers" class="headerlink" title="Configuring Consumers"></a>Configuring Consumers</h2><ul>
+<li><p>fetch.min.bytes</p>
+<p>获取records时希望从broker获取的数据的最小量。如果新的records比min.fetch.bytes的byte数少时，broker会再发送records返回给consumer前等待更多可用的信息</p>
+</li>
+<li><p>fetch.max.wait.ms</p>
+<p>默认Kafka等待500ms。</p>
+</li>
+<li><p>max.partition.fetch.bytes</p>
+<p>服务器每个partition返回的最大bytes数量</p>
+</li>
+<li><p>session.timeout.ms</p>
+</li>
+<li><p>auto.offset.reset</p>
+</li>
+<li><p>enable.auto.commit</p>
+</li>
+<li><p>partition.assignment.strategy 随机/轮询</p>
+</li>
+<li><p>max.poll.records</p>
+<p>单次调用poll<code>()</code>返回的最大records数量</p>
+</li>
+<li><p>receive.buffer.bytes and send.buffer.bytes</p>
+</li>
+</ul>
+<h2 id="Commits-and-Offsets"><a href="#Commits-and-Offsets" class="headerlink" title="Commits and Offsets"></a>Commits and Offsets</h2>
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/08/实战Java虚拟机-JVM故障诊断与性能优化-笔记/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2173,172 +2406,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/05/12/大三寻找暑假实习的总结/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Edward">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Silent Majority">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/05/12/大三寻找暑假实习的总结/" itemprop="url">
-                  大三寻找暑假实习的总结
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-12T22:28:26+08:00">
-                2017-05-12
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>从三月上旬投递简历，到今天拿到一个还不错的offer，过去了两个月的时间。如果接下来顺利的话，暑假的去向也不会有改变了，所以写一篇博客来记录一下这两个月总结。</p>
-<ul>
-<li><p>阿里</p>
-<p>投递简历，做了性格测试和编程测试的周末3月12日杭州就打来了电话，不过至今都不知道这通电话属于内推还是提前打捞简历池。因为是最早接到的一次电话面试，Java刚刚复习，数据库也没有复习，计算机网络的课程也处于学习阶段，所以有很多问题根本没有回答上来。</p>
-<p>电话流程基本上是自我介绍，对暑假项目的推荐算法进一步问了还有哪些公式计算相似度，Java，数据结构，数据库，网络，框架，计算机体系……很多方面都涉及到了。</p>
-<p>从现在的角度来看，这个电话面试其实是覆盖面最大的一个，当时复习也没有怎么开始，所以不出意外地没有通过，其实这个阿里的面试没有能够进行下去是最为遗憾的一件事情。4月26日做了正式的笔试，选择题部分有很多C++的部分(?)，感觉内推已经消耗了大量的岗位，所以也没有报什么希望，至今状态处在笔试中。</p>
-</li>
-<li><p>华为</p>
-<p>3月17日笔试，三道编程题，整个找实习阶段最简单的一次考试，很轻松地AC了三道。上操作系统课的时候发现漏接一通电话，一查是华为，所以后来整节课都没有好好听。下午接到了HR第二次电话预约了周五面试。</p>
-<p>4月14日面试首先是惯例的自我介绍，然后又问几个常规问题，讲了一下做的项目，因为提问介绍了这个学期做的项目的数据库设计，正好那一周写了需求规约，所以没出什么问题。手写了一个初中学Pascal的时候就学过的算法，不过即使学了也是毫无印象了。考虑了特殊情况后，模拟人工的情况，回来以后发现vector和queue的方法用混了…第二面基本无实质性内容，非常愉悦地回来了。</p>
-<p>因此感觉自己华为能过，所以开始了漫长的等待。第二周接到电话询问是否已经面试。第三周操作系统课一下课就收到了实习时间和地点的询问电话，这个时候感觉差不多稳了。期间加了华为实习的群，天天查看官网的状态，整个过程非常地煎熬。四月底开始，华为各地开始陆续发放offer，然而上海这边每周都会有同学过去面试。知道五月第一周上研差不多结束之后，还发短信问了HR，结果没有回复…</p>
-<p>到了这一周，预计可以发offer，所以到哪里都带着手机（这半个月被吐槽好几次为什么吃个晚饭要带包，之前五一长跑节活动的时候也拿着）。看着讨论群里南京都陆续地发了两三批，心灰意冷地等下周的时候，今天周五终于收到了offer的短信，具体信息还要看下周的邮件和电话，不过这个也是我能拿到的最好的offer了。</p>
-</li>
-<li><p>Pwc 信息技术</p>
-<p>这个是学校职场灯塔推送的，本来以为是律师事务所下的技术部门，不过后来发现是个独立的Pwc子公司。宣讲3月20日和摩根撞了时间，所以交大这里人就不多。糊里糊涂地做了会后的笔试，在周四操作系统课（又是OS课）的时候接到笔试通过邀请去群面的短信，为了正装的要求还折腾了一会。</p>
-<p>3月25日下午群面，翘掉了网易的笔试（不过本来报的上海子公司就放弃了），第一次做无领导小组讨论，所以就做了聆听者。中间提了一个建议让整个团队改变了一些思考策略，又给面试官推销了自己的技术能力，所以尽管遇到了“你认为谁应该被淘汰”这种杀手级问题没有回答出来的窘境，但还是过了。</p>
-<p>3月31日又去了长泰广场一对多终面。等待期间被华师大同学包围，当时群面的小组似乎是进的人最多的。终面依然介绍项目，回答将来学习新技术能接受吗这类问题，期间又推销了一下自己写D3JS可视化的内容。</p>
-<p>4月11日收到offer，和HR在12日沟通，要求马上给出负责的回答，当时正好华为通知去面试，等终面的时候也看到了实际的工作场景，思考了一个晚上，觉得自己还是可以承担0offer的后果拒掉了。</p>
-</li>
-<li><p>美团点评</p>
-<p>3月21日做的笔试，智力题即找数字规律部分根本不会做，所以笔试也没有通过。</p>
-</li>
-<li><p>携程</p>
-<p>3月22日学校宣讲会做的笔试，当时为了能够赶上时间还把项目中期答辩的时间提到了第一个。做完后感觉不错，所以等第二周HR打电话。3月28日收到了HR电话，第二天就去了凌空SOHO面试了。</p>
-<p>介绍项目，被质疑了部分内容；回顾笔试算法题目，期间被我弄巧成拙；Java的常规问题，数据类型的位数严重记不清，波及了整场面试；手写算法，题目正好和美团点评的相同；结束后，面试官说还要注重基础…</p>
-<p>后续就石沉大海，做了4月11日的网上笔试，查到笔试通过一周多后在操作系统课上接到电话面试。大概持续了十几分钟，然后又没有下文了…</p>
-</li>
-<li><p>VMWare</p>
-<p>我都不想承认报过这家公司，三道题一道都没有做出来，还是我面完携程特地赶回学校做的测试。</p>
-</li>
-<li><p>摩根</p>
-<p>同样不想承认，慌慌张张地在笔试卷子有效期截止当晚做了Java和C++两套，没有消息。</p>
-</li>
-<li><p>微软</p>
-<p>3月31日的四道算法题依然一道未过，调剂去了技术支持。本着先试试想法，4月17日直接从学校去了紫竹。先是写封邮件，然后三面，包括计算机网络、操作系统知识，模拟真实情况以及英语能力测试。第三面主管面讲了好久这个学期项目的教训与改进之处，以及和路由有关的问题。</p>
-<p>觉得回答得也不是很差，但还是收到了Thank You Letter。</p>
-</li>
-<li><p>腾讯</p>
-<p>3月底接过一个深圳的电面，不过我也没有参加内推呀…本来报的是Web开发岗位，但问了很多JavaScript内容，所以一结束就换成了后端开发。</p>
-<p>4月4日做的网上笔试，网络和C++部分依然不熟。4月16日去酒店一面，腾讯看起来内部使用C++为主，但复习的一直是Java所以第二天就看到“目前职位不太适合”的状态。</p>
-</li>
-<li><p>百度</p>
-<p>华为面试完回来晚上报的软件开发。4月27日笔试的时候又让我后悔没有看两眼C++，编程部分AC2.3道，不过同样至今没有消息。</p>
-</li>
-</ul>
-<p>总结下来整整两个月就收获了一大一中两家公司的offer，和厉害的人还是不能比啊。希望今天收到的offer之后跟进流程能顺利。</p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -2388,7 +2455,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-count">14</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -2443,7 +2510,7 @@
         <div class="copyright" >
   
   &copy; 
-  <span itemprop="copyrightYear">2017</span>
+  <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
