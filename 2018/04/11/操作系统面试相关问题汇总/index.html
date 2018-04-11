@@ -1,0 +1,748 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="进程VS线程进程 一个程序至少有一个进程 私有地址空间 进程间切换更耗时 操作系统进行资源分配的最小单元  线程 一个进程至少有一个线程，线程是轻量级的进程 共享地址空间 线程间切换不如进程间切换耗时 CPU调度的基本单位  进程间通信 https://zh.wikipedia.org/wiki/%E8%A1%8C%E7%A8%8B%E9%96%93%E9%80%9A%E8%A8%8A https">
+<meta name="keywords">
+<meta property="og:type" content="article">
+<meta property="og:title" content="操作系统面试相关问题汇总">
+<meta property="og:url" content="http://yoursite.com/2018/04/11/操作系统面试相关问题汇总/index.html">
+<meta property="og:site_name" content="Silent Majority">
+<meta property="og:description" content="进程VS线程进程 一个程序至少有一个进程 私有地址空间 进程间切换更耗时 操作系统进行资源分配的最小单元  线程 一个进程至少有一个线程，线程是轻量级的进程 共享地址空间 线程间切换不如进程间切换耗时 CPU调度的基本单位  进程间通信 https://zh.wikipedia.org/wiki/%E8%A1%8C%E7%A8%8B%E9%96%93%E9%80%9A%E8%A8%8A https">
+<meta property="og:updated_time" content="2018-04-11T15:22:54.411Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="操作系统面试相关问题汇总">
+<meta name="twitter:description" content="进程VS线程进程 一个程序至少有一个进程 私有地址空间 进程间切换更耗时 操作系统进行资源分配的最小单元  线程 一个进程至少有一个线程，线程是轻量级的进程 共享地址空间 线程间切换不如进程间切换耗时 CPU调度的基本单位  进程间通信 https://zh.wikipedia.org/wiki/%E8%A1%8C%E7%A8%8B%E9%96%93%E9%80%9A%E8%A8%8A https">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/04/11/操作系统面试相关问题汇总/"/>
+
+
+
+
+
+  <title> 操作系统面试相关问题汇总 | Silent Majority </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Silent Majority</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/11/操作系统面试相关问题汇总/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Edward">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Silent Majority">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                操作系统面试相关问题汇总
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-11T22:19:31+08:00">
+                2018-04-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="进程VS线程"><a href="#进程VS线程" class="headerlink" title="进程VS线程"></a>进程VS线程</h1><h2 id="进程"><a href="#进程" class="headerlink" title="进程"></a>进程</h2><ul>
+<li>一个程序至少有一个进程</li>
+<li>私有地址空间</li>
+<li>进程间切换更耗时</li>
+<li>操作系统进行资源分配的最小单元</li>
+</ul>
+<h2 id="线程"><a href="#线程" class="headerlink" title="线程"></a>线程</h2><ul>
+<li>一个进程至少有一个线程，线程是轻量级的进程</li>
+<li>共享地址空间</li>
+<li>线程间切换不如进程间切换耗时</li>
+<li>CPU调度的基本单位</li>
+</ul>
+<h1 id="进程间通信"><a href="#进程间通信" class="headerlink" title="进程间通信"></a>进程间通信</h1><blockquote>
+<p><a href="https://zh.wikipedia.org/wiki/%E8%A1%8C%E7%A8%8B%E9%96%93%E9%80%9A%E8%A8%8A" target="_blank" rel="external">https://zh.wikipedia.org/wiki/%E8%A1%8C%E7%A8%8B%E9%96%93%E9%80%9A%E8%A8%8A</a></p>
+<p><a href="https://www.ibm.com/developerworks/cn/linux/l-ipc/" target="_blank" rel="external">https://www.ibm.com/developerworks/cn/linux/l-ipc/</a></p>
+</blockquote>
+<ul>
+<li>管道：具有亲缘关系进程间通信</li>
+<li>有名管道：允许无亲缘间关系进程间通信</li>
+<li>信号</li>
+<li>消息队列</li>
+<li>共享内存</li>
+<li>信号量</li>
+<li>套接字</li>
+</ul>
+<h1 id="进程同步"><a href="#进程同步" class="headerlink" title="进程同步"></a>进程同步</h1><ul>
+<li>信号量</li>
+<li>自旋锁</li>
+<li>栅栏</li>
+</ul>
+<h1 id="线程同步"><a href="#线程同步" class="headerlink" title="线程同步"></a>线程同步</h1><ul>
+<li>互斥量</li>
+<li>信号量</li>
+<li>条件变量</li>
+<li>读写锁</li>
+</ul>
+<h1 id="死锁"><a href="#死锁" class="headerlink" title="死锁"></a>死锁</h1><blockquote>
+<p>《现代操作系统》 P246</p>
+</blockquote>
+<p>四个条件</p>
+<ul>
+<li>互斥：每个资源要么已经分配给了一个进程，要么就是可用的</li>
+</ul>
+<ul>
+<li>占有和等待：已经得到了某个资源的进程可以再请求新的资源</li>
+<li>不可抢占：已经分配给一个进程的资源不能强制性地被抢占，它只能被占有它地进程显式地释放</li>
+<li>环路等待：死锁发生时，系统中一定有由两个或两个以上地进程组成地一条环路，该环路中地每个进程都在等待着下一个进程所占有的资源</li>
+</ul>
+<h1 id="生产者消费者"><a href="#生产者消费者" class="headerlink" title="生产者消费者"></a>生产者消费者</h1><h2 id="使用Object的wait-和notify"><a href="#使用Object的wait-和notify" class="headerlink" title="使用Object的wait()和notify()"></a>使用Object的wait()和notify()</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ProducerConsumer</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> Queue&lt;Integer&gt; queue = <span class="keyword">new</span> LinkedList&lt;Integer&gt;();</div><div class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">static</span> <span class="keyword">int</span> SIZE = <span class="number">3</span>;</div><div class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Producer</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</div><div class="line">            <span class="keyword">synchronized</span> (queue) &#123;</div><div class="line">                <span class="keyword">while</span> (queue.size() == SIZE) &#123;</div><div class="line">                    <span class="keyword">try</span> &#123;</div><div class="line">                        queue.wait();</div><div class="line">                    &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</div><div class="line">                        e.printStackTrace();</div><div class="line">                    &#125;</div><div class="line">                &#125;</div><div class="line">                queue.add(<span class="keyword">new</span> Random().nextInt(<span class="number">100</span>));</div><div class="line">                queue.notifyAll();</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Consumer</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</div><div class="line">            <span class="keyword">synchronized</span> (queue) &#123;</div><div class="line">                <span class="keyword">while</span> (queue.isEmpty()) &#123;</div><div class="line">                    <span class="keyword">try</span> &#123;</div><div class="line">                        queue.wait();</div><div class="line">                    &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</div><div class="line">                        e.printStackTrace();</div><div class="line">                    &#125;</div><div class="line">                &#125;</div><div class="line">                queue.poll();</div><div class="line">                queue.notifyAll();</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="使用Lock的Condition"><a href="#使用Lock的Condition" class="headerlink" title="使用Lock的Condition"></a>使用Lock的Condition</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ProducerConsumer</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> Lock lock = <span class="keyword">new</span> ReentrantLock();</div><div class="line">    <span class="keyword">private</span> Condition notFull = lock.newCondition();</div><div class="line">    <span class="keyword">private</span> Condition notEmpty = lock.newCondition();</div><div class="line">    <span class="keyword">private</span> Queue&lt;Integer&gt; queue = <span class="keyword">new</span> LinkedList&lt;Integer&gt;();</div><div class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">static</span> <span class="keyword">int</span> SIZE = <span class="number">3</span>;</div><div class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Producer</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</div><div class="line">            lock.lock();</div><div class="line">            <span class="keyword">try</span> &#123;</div><div class="line">                <span class="keyword">while</span> (queue.size() == SIZE) &#123;</div><div class="line">                    notFull.await();</div><div class="line">                &#125;</div><div class="line">                queue.add(<span class="keyword">new</span> Random().nextInt(<span class="number">100</span>));</div><div class="line">                notEmpty.signalAll();</div><div class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</div><div class="line">                e.printStackTrace();</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">finally</span> &#123;</div><div class="line">                lock.unlock();</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Consumer</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</div><div class="line">            lock.lock();</div><div class="line">            <span class="keyword">try</span> &#123;</div><div class="line">                <span class="keyword">while</span> (queue.isEmpty()) &#123;</div><div class="line">                    notEmpty.await();</div><div class="line">                &#125;</div><div class="line">                queue.poll();</div><div class="line">                notFull.signalAll();</div><div class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</div><div class="line">                e.printStackTrace();</div><div class="line">            &#125; <span class="keyword">finally</span> &#123;</div><div class="line">                lock.unlock();</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h1 id="缓存"><a href="#缓存" class="headerlink" title="缓存"></a>缓存</h1><p>程序需要第k+1层某个数据对象d时：</p>
+<ul>
+<li>缓存命中：d刚好缓存在第k层中</li>
+<li>缓存不命中：第k层中没有缓存数据对象d</li>
+</ul>
+<p>计算机系统每个存储器地址有m位，形成M=2^m个不同的地址。组织成S=2^s个告诉缓存组的数组，每个组包含E个高速缓存行，每个行是由一个B=2^b字节的数据块组成的，一个有效位指明这个行是否包含有意义的 信息，还有t=m-(b+s)个标记位唯一地标识存储在这个高速缓存行中的块。</p>
+<p>地址：t位（标记）+ s位（组索引）+ b位（块偏移）</p>
+<ul>
+<li>write through：立即将w的高速缓存块写回到紧接着的低一层中</li>
+<li>write back：只有当替换算法要驱逐这个更新过的块时，才把它写到紧接着的低一层</li>
+</ul>
+<h1 id="虚拟内存"><a href="#虚拟内存" class="headerlink" title="虚拟内存"></a>虚拟内存</h1><h2 id="页表"><a href="#页表" class="headerlink" title="页表"></a>页表</h2><p>页表将虚拟页映射到物理页，每次地址翻译时硬件将一个虚拟地址转换成物理地址时，都会读取页表。</p>
+<p>页表就是一个页表条目（PTE）的数组</p>
+<h2 id="地址翻译"><a href="#地址翻译" class="headerlink" title="地址翻译"></a>地址翻译</h2><p>虚拟地址：虚拟页号（VPN）+ 虚拟页偏移量（VPO）</p>
+<p>VPN作为到页表中的索引，获得物理页号；虚拟页偏移量  -&gt; 物理页偏移量</p>
+<p>物理地址：物理页号（PPN）+ 物理页偏移量（PPO）</p>
+<ol>
+<li>处理器生成一个虚拟地址，并把它传送给MMU（Memory Management Unit）</li>
+<li>MMU生成PTE地址，并从高速缓存/主存请求得到它</li>
+<li>高速缓存/主存向MMU返回PTE</li>
+<li>MMU构造物理地址，并把它传送给高速缓存/主存</li>
+<li>高速缓存/主存返回所请求的数据字给处理器</li>
+</ol>
+<h2 id="TLB加速地址翻译"><a href="#TLB加速地址翻译" class="headerlink" title="TLB加速地址翻译"></a>TLB加速地址翻译</h2><ol>
+<li>CPU产生一个虚拟地址</li>
+<li><ol>
+<li>MMU从TLB中取出相应的PTE</li>
+<li>MMU将这个虚拟地址翻译成一个物理地址，并且将它发送到高速缓存/主存</li>
+<li>高速缓存/主存返回所请求的数据字给CPU</li>
+</ol>
+</li>
+</ol>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/18/Kafka权威指南-笔记/" rel="prev" title="Kafka权威指南 笔记">
+                Kafka权威指南 笔记 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="Edward" />
+          <p class="site-author-name" itemprop="name">Edward</p>
+           
+              <p class="site-description motion-element" itemprop="description">SE @ SJTU</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">15</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">标签</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#进程VS线程"><span class="nav-number">1.</span> <span class="nav-text">进程VS线程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#进程"><span class="nav-number">1.1.</span> <span class="nav-text">进程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#线程"><span class="nav-number">1.2.</span> <span class="nav-text">线程</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#进程间通信"><span class="nav-number">2.</span> <span class="nav-text">进程间通信</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#进程同步"><span class="nav-number">3.</span> <span class="nav-text">进程同步</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#线程同步"><span class="nav-number">4.</span> <span class="nav-text">线程同步</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#死锁"><span class="nav-number">5.</span> <span class="nav-text">死锁</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#生产者消费者"><span class="nav-number">6.</span> <span class="nav-text">生产者消费者</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#使用Object的wait-和notify"><span class="nav-number">6.1.</span> <span class="nav-text">使用Object的wait()和notify()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用Lock的Condition"><span class="nav-number">6.2.</span> <span class="nav-text">使用Lock的Condition</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#缓存"><span class="nav-number">7.</span> <span class="nav-text">缓存</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#虚拟内存"><span class="nav-number">8.</span> <span class="nav-text">虚拟内存</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#页表"><span class="nav-number">8.1.</span> <span class="nav-text">页表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#地址翻译"><span class="nav-number">8.2.</span> <span class="nav-text">地址翻译</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TLB加速地址翻译"><span class="nav-number">8.3.</span> <span class="nav-text">TLB加速地址翻译</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Edward</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -250,6 +250,208 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/11/操作系统面试相关问题汇总/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Edward">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Silent Majority">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2018/04/11/操作系统面试相关问题汇总/" itemprop="url">
+                  操作系统面试相关问题汇总
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-11T22:19:31+08:00">
+                2018-04-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="进程VS线程"><a href="#进程VS线程" class="headerlink" title="进程VS线程"></a>进程VS线程</h1><h2 id="进程"><a href="#进程" class="headerlink" title="进程"></a>进程</h2><ul>
+<li>一个程序至少有一个进程</li>
+<li>私有地址空间</li>
+<li>进程间切换更耗时</li>
+<li>操作系统进行资源分配的最小单元</li>
+</ul>
+<h2 id="线程"><a href="#线程" class="headerlink" title="线程"></a>线程</h2><ul>
+<li>一个进程至少有一个线程，线程是轻量级的进程</li>
+<li>共享地址空间</li>
+<li>线程间切换不如进程间切换耗时</li>
+<li>CPU调度的基本单位</li>
+</ul>
+<h1 id="进程间通信"><a href="#进程间通信" class="headerlink" title="进程间通信"></a>进程间通信</h1><blockquote>
+<p><a href="https://zh.wikipedia.org/wiki/%E8%A1%8C%E7%A8%8B%E9%96%93%E9%80%9A%E8%A8%8A" target="_blank" rel="external">https://zh.wikipedia.org/wiki/%E8%A1%8C%E7%A8%8B%E9%96%93%E9%80%9A%E8%A8%8A</a></p>
+<p><a href="https://www.ibm.com/developerworks/cn/linux/l-ipc/" target="_blank" rel="external">https://www.ibm.com/developerworks/cn/linux/l-ipc/</a></p>
+</blockquote>
+<ul>
+<li>管道：具有亲缘关系进程间通信</li>
+<li>有名管道：允许无亲缘间关系进程间通信</li>
+<li>信号</li>
+<li>消息队列</li>
+<li>共享内存</li>
+<li>信号量</li>
+<li>套接字</li>
+</ul>
+<h1 id="进程同步"><a href="#进程同步" class="headerlink" title="进程同步"></a>进程同步</h1><ul>
+<li>信号量</li>
+<li>自旋锁</li>
+<li>栅栏</li>
+</ul>
+<h1 id="线程同步"><a href="#线程同步" class="headerlink" title="线程同步"></a>线程同步</h1><ul>
+<li>互斥量</li>
+<li>信号量</li>
+<li>条件变量</li>
+<li>读写锁</li>
+</ul>
+<h1 id="死锁"><a href="#死锁" class="headerlink" title="死锁"></a>死锁</h1><blockquote>
+<p>《现代操作系统》 P246</p>
+</blockquote>
+<p>四个条件</p>
+<ul>
+<li>互斥：每个资源要么已经分配给了一个进程，要么就是可用的</li>
+</ul>
+<ul>
+<li>占有和等待：已经得到了某个资源的进程可以再请求新的资源</li>
+<li>不可抢占：已经分配给一个进程的资源不能强制性地被抢占，它只能被占有它地进程显式地释放</li>
+<li>环路等待：死锁发生时，系统中一定有由两个或两个以上地进程组成地一条环路，该环路中地每个进程都在等待着下一个进程所占有的资源</li>
+</ul>
+<h1 id="生产者消费者"><a href="#生产者消费者" class="headerlink" title="生产者消费者"></a>生产者消费者</h1><h2 id="使用Object的wait-和notify"><a href="#使用Object的wait-和notify" class="headerlink" title="使用Object的wait()和notify()"></a>使用Object的wait()和notify()</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ProducerConsumer</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> Queue&lt;Integer&gt; queue = <span class="keyword">new</span> LinkedList&lt;Integer&gt;();</div><div class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">static</span> <span class="keyword">int</span> SIZE = <span class="number">3</span>;</div><div class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Producer</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</div><div class="line">            <span class="keyword">synchronized</span> (queue) &#123;</div><div class="line">                <span class="keyword">while</span> (queue.size() == SIZE) &#123;</div><div class="line">                    <span class="keyword">try</span> &#123;</div><div class="line">                        queue.wait();</div><div class="line">                    &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</div><div class="line">                        e.printStackTrace();</div><div class="line">                    &#125;</div><div class="line">                &#125;</div><div class="line">                queue.add(<span class="keyword">new</span> Random().nextInt(<span class="number">100</span>));</div><div class="line">                queue.notifyAll();</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Consumer</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</div><div class="line">            <span class="keyword">synchronized</span> (queue) &#123;</div><div class="line">                <span class="keyword">while</span> (queue.isEmpty()) &#123;</div><div class="line">                    <span class="keyword">try</span> &#123;</div><div class="line">                        queue.wait();</div><div class="line">                    &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</div><div class="line">                        e.printStackTrace();</div><div class="line">                    &#125;</div><div class="line">                &#125;</div><div class="line">                queue.poll();</div><div class="line">                queue.notifyAll();</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="使用Lock的Condition"><a href="#使用Lock的Condition" class="headerlink" title="使用Lock的Condition"></a>使用Lock的Condition</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ProducerConsumer</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> Lock lock = <span class="keyword">new</span> ReentrantLock();</div><div class="line">    <span class="keyword">private</span> Condition notFull = lock.newCondition();</div><div class="line">    <span class="keyword">private</span> Condition notEmpty = lock.newCondition();</div><div class="line">    <span class="keyword">private</span> Queue&lt;Integer&gt; queue = <span class="keyword">new</span> LinkedList&lt;Integer&gt;();</div><div class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">static</span> <span class="keyword">int</span> SIZE = <span class="number">3</span>;</div><div class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Producer</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</div><div class="line">            lock.lock();</div><div class="line">            <span class="keyword">try</span> &#123;</div><div class="line">                <span class="keyword">while</span> (queue.size() == SIZE) &#123;</div><div class="line">                    notFull.await();</div><div class="line">                &#125;</div><div class="line">                queue.add(<span class="keyword">new</span> Random().nextInt(<span class="number">100</span>));</div><div class="line">                notEmpty.signalAll();</div><div class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</div><div class="line">                e.printStackTrace();</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">finally</span> &#123;</div><div class="line">                lock.unlock();</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Consumer</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</div><div class="line">        <span class="meta">@Override</span></div><div class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</div><div class="line">            lock.lock();</div><div class="line">            <span class="keyword">try</span> &#123;</div><div class="line">                <span class="keyword">while</span> (queue.isEmpty()) &#123;</div><div class="line">                    notEmpty.await();</div><div class="line">                &#125;</div><div class="line">                queue.poll();</div><div class="line">                notFull.signalAll();</div><div class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</div><div class="line">                e.printStackTrace();</div><div class="line">            &#125; <span class="keyword">finally</span> &#123;</div><div class="line">                lock.unlock();</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h1 id="缓存"><a href="#缓存" class="headerlink" title="缓存"></a>缓存</h1><p>程序需要第k+1层某个数据对象d时：</p>
+<ul>
+<li>缓存命中：d刚好缓存在第k层中</li>
+<li>缓存不命中：第k层中没有缓存数据对象d</li>
+</ul>
+<p>计算机系统每个存储器地址有m位，形成M=2^m个不同的地址。组织成S=2^s个告诉缓存组的数组，每个组包含E个高速缓存行，每个行是由一个B=2^b字节的数据块组成的，一个有效位指明这个行是否包含有意义的 信息，还有t=m-(b+s)个标记位唯一地标识存储在这个高速缓存行中的块。</p>
+<p>地址：t位（标记）+ s位（组索引）+ b位（块偏移）</p>
+<ul>
+<li>write through：立即将w的高速缓存块写回到紧接着的低一层中</li>
+<li>write back：只有当替换算法要驱逐这个更新过的块时，才把它写到紧接着的低一层</li>
+</ul>
+<h1 id="虚拟内存"><a href="#虚拟内存" class="headerlink" title="虚拟内存"></a>虚拟内存</h1><h2 id="页表"><a href="#页表" class="headerlink" title="页表"></a>页表</h2><p>页表将虚拟页映射到物理页，每次地址翻译时硬件将一个虚拟地址转换成物理地址时，都会读取页表。</p>
+<p>页表就是一个页表条目（PTE）的数组</p>
+<h2 id="地址翻译"><a href="#地址翻译" class="headerlink" title="地址翻译"></a>地址翻译</h2><p>虚拟地址：虚拟页号（VPN）+ 虚拟页偏移量（VPO）</p>
+<p>VPN作为到页表中的索引，获得物理页号；虚拟页偏移量  -&gt; 物理页偏移量</p>
+<p>物理地址：物理页号（PPN）+ 物理页偏移量（PPO）</p>
+<ol>
+<li>处理器生成一个虚拟地址，并把它传送给MMU（Memory Management Unit）</li>
+<li>MMU生成PTE地址，并从高速缓存/主存请求得到它</li>
+<li>高速缓存/主存向MMU返回PTE</li>
+<li>MMU构造物理地址，并把它传送给高速缓存/主存</li>
+<li>高速缓存/主存返回所请求的数据字给处理器</li>
+</ol>
+<h2 id="TLB加速地址翻译"><a href="#TLB加速地址翻译" class="headerlink" title="TLB加速地址翻译"></a>TLB加速地址翻译</h2><ol>
+<li>CPU产生一个虚拟地址</li>
+<li><ol>
+<li>MMU从TLB中取出相应的PTE</li>
+<li>MMU将这个虚拟地址翻译成一个物理地址，并且将它发送到高速缓存/主存</li>
+<li>高速缓存/主存返回所请求的数据字给CPU</li>
+</ol>
+</li>
+</ol>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/18/Kafka权威指南-笔记/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2264,166 +2466,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/13/C++ 类的实例化对象大小/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Edward">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Silent Majority">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/08/13/C++ 类的实例化对象大小/" itemprop="url">
-                  C++ 类的实例化对象大小
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-13T14:08:00+08:00">
-                2017-08-13
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>实习生笔试面试时碰到过多次的问题，通过运行代码记录一下结论。测试平台为64位。</p>
-<h1 id="空类"><a href="#空类" class="headerlink" title="空类"></a>空类</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">class</span> A &#123;&#125;;</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</div><div class="line">    A a;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"sizeof(a) is "</span> &lt;&lt; <span class="keyword">sizeof</span>(a) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sizeof(a) is 1</div></pre></td></tr></table></figure>
-<p><strong>空类的大小为1</strong></p>
-<h1 id="只含有构造函数、析构函数、成员函数的类"><a href="#只含有构造函数、析构函数、成员函数的类" class="headerlink" title="只含有构造函数、析构函数、成员函数的类"></a>只含有构造函数、析构函数、成员函数的类</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">class</span> A &#123;</div><div class="line"><span class="keyword">public</span>:</div><div class="line">    A() &#123;&#125;;</div><div class="line">    ~A() &#123;&#125;;</div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">fun</span><span class="params">()</span> </span>&#123;&#125;;</div><div class="line">&#125;;</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</div><div class="line">    A a;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"sizeof(a) is "</span> &lt;&lt; <span class="keyword">sizeof</span>(a) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sizeof(a) is 1</div></pre></td></tr></table></figure>
-<p><strong>大小与构造函数、析构函数、成员函数无关</strong></p>
-<h1 id="含有成员变量的类"><a href="#含有成员变量的类" class="headerlink" title="含有成员变量的类"></a>含有成员变量的类</h1><p>需要考虑对齐</p>
-<p>C++中数据类型占据字节长度<br>| 数据类型   | 大小   |<br>| —— | —- |<br>| char   | 1    |<br>| bool   | 1    |<br>| short  | 2    |<br>| int    | 4    |<br>| float  | 4    |<br>| double | 8    |</p>
-<h2 id="简单类"><a href="#简单类" class="headerlink" title="简单类"></a>简单类</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">class</span> A &#123;</div><div class="line"><span class="keyword">public</span>:</div><div class="line">    <span class="keyword">char</span> ch;</div><div class="line">    <span class="keyword">int</span> num;</div><div class="line">&#125;;</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</div><div class="line">    A a;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"sizeof(a) is "</span> &lt;&lt; <span class="keyword">sizeof</span>(a) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sizeof(a) is 8</div></pre></td></tr></table></figure>
-<p>size = 1(char) + 3(padding) + 4(int) = 8</p>
-<h2 id="成员变量不同的顺序"><a href="#成员变量不同的顺序" class="headerlink" title="成员变量不同的顺序"></a>成员变量不同的顺序</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">class</span> A &#123;</div><div class="line"><span class="keyword">public</span>:</div><div class="line">    <span class="keyword">double</span> d;</div><div class="line">    <span class="keyword">char</span> ch;</div><div class="line">    <span class="keyword">int</span> num;</div><div class="line">&#125;;</div><div class="line"><span class="keyword">class</span> B &#123;</div><div class="line"><span class="keyword">public</span>:</div><div class="line">    <span class="keyword">char</span> ch;</div><div class="line">    <span class="keyword">double</span> d;</div><div class="line">    <span class="keyword">int</span> num;</div><div class="line">&#125;;</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</div><div class="line">    A a;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"sizeof(a) is "</span> &lt;&lt; <span class="keyword">sizeof</span>(a) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    B b;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"sizeof(b) is "</span> &lt;&lt; <span class="keyword">sizeof</span>(b) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sizeof(a) is 16</div><div class="line">sizeof(b) is 24</div></pre></td></tr></table></figure>
-<p>大小为占用最大空间的类型所占用的字节数的倍数</p>
-<p>sizeof(a) = 8(double) + 1(char) + 3(padding) + 4(int) = 16</p>
-<p>sizeof(b) = 1(char) + 7(padding) + 8(double) + 4(int) + 4(padding) = 24</p>
-<h2 id="指针"><a href="#指针" class="headerlink" title="指针"></a>指针</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">class</span> A &#123;</div><div class="line"><span class="keyword">public</span>:</div><div class="line">    <span class="keyword">int</span>* p;</div><div class="line">&#125;;</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</div><div class="line">    A a;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"sizeof(a) is "</span> &lt;&lt; <span class="keyword">sizeof</span>(a) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sizeof(a) is 8</div></pre></td></tr></table></figure>
-<p>指针变量的大小与机器平台有关，64位机器为8个字节</p>
-<h2 id="静态成员变量"><a href="#静态成员变量" class="headerlink" title="静态成员变量"></a>静态成员变量</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">class</span> A &#123;</div><div class="line"><span class="keyword">public</span>:</div><div class="line">    <span class="keyword">char</span> ch;</div><div class="line">    <span class="keyword">int</span> num;</div><div class="line">    <span class="keyword">static</span> <span class="keyword">int</span> count;</div><div class="line">&#125;;</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</div><div class="line">    A a;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"sizeof(a) is "</span> &lt;&lt; <span class="keyword">sizeof</span>(a) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sizeof(a) is 8</div></pre></td></tr></table></figure>
-<p>静态成员变量不影响</p>
-<h1 id="虚函数"><a href="#虚函数" class="headerlink" title="虚函数"></a>虚函数</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">class</span> A &#123;</div><div class="line"><span class="keyword">public</span>:</div><div class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">fun1</span><span class="params">()</span> </span>&#123;&#125;</div><div class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">fun2</span><span class="params">()</span> </span>&#123;&#125;</div><div class="line">&#125;;</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</div><div class="line">    A a;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"sizeof(a) is "</span> &lt;&lt; <span class="keyword">sizeof</span>(a) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sizeof(a) is 8</div></pre></td></tr></table></figure>
-<p>有虚函数时，占用个内存会包含一个虚表指针(64位大小为8字节)，且不论虚函数的个数多少只有一个</p>
-<p>虚表指针放在对象内存的起始位置</p>
-<h1 id="继承"><a href="#继承" class="headerlink" title="继承"></a>继承</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">class</span> A &#123;</div><div class="line"><span class="keyword">public</span>:</div><div class="line">    <span class="keyword">char</span> ch1;</div><div class="line">&#125;;</div><div class="line"><span class="keyword">class</span> B:<span class="keyword">public</span> A&#123;</div><div class="line"><span class="keyword">public</span>:</div><div class="line">    <span class="keyword">char</span> ch2;</div><div class="line">    <span class="keyword">int</span> num;</div><div class="line">&#125;;</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</div><div class="line">    A a;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"sizeof(a) is "</span> &lt;&lt; <span class="keyword">sizeof</span>(a) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    B b;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"sizeof(b) is "</span> &lt;&lt; <span class="keyword">sizeof</span>(b) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sizeof(a) is 1</div><div class="line">sizeof(b) is 8</div></pre></td></tr></table></figure>
-<p>大小叠加并考虑对齐，基类成员在前</p>
-<h2 id="同名变量"><a href="#同名变量" class="headerlink" title="同名变量"></a>同名变量</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">class</span> A &#123;</div><div class="line"><span class="keyword">public</span>:</div><div class="line">    <span class="keyword">int</span> num;</div><div class="line">&#125;;</div><div class="line"><span class="keyword">class</span> B:<span class="keyword">public</span> A&#123;</div><div class="line"><span class="keyword">public</span>:</div><div class="line">    <span class="keyword">int</span> num;</div><div class="line">&#125;;</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</div><div class="line">    A a;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"sizeof(a) is "</span> &lt;&lt; <span class="keyword">sizeof</span>(a) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    B b;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"sizeof(b) is "</span> &lt;&lt; <span class="keyword">sizeof</span>(b) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sizeof(a) is 4</div><div class="line">sizeof(b) is 8</div></pre></td></tr></table></figure>
-<h2 id="含有虚函数"><a href="#含有虚函数" class="headerlink" title="含有虚函数"></a>含有虚函数</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">class</span> A &#123;</div><div class="line"><span class="keyword">public</span>:</div><div class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">fun1</span><span class="params">()</span> </span>&#123;&#125;</div><div class="line">&#125;;</div><div class="line"><span class="keyword">class</span> B:<span class="keyword">public</span> A&#123;</div><div class="line"><span class="keyword">public</span>:</div><div class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">fun2</span><span class="params">()</span> </span>&#123;&#125;</div><div class="line">&#125;;</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</div><div class="line">    A a;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"sizeof(a) is "</span> &lt;&lt; <span class="keyword">sizeof</span>(a) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    B b;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"sizeof(b) is "</span> &lt;&lt; <span class="keyword">sizeof</span>(b) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sizeof(a) is 8</div><div class="line">sizeof(b) is 8</div></pre></td></tr></table></figure>
-<p>基类有虚函数，派生类也有虚函数，在虚表指针指向的虚表中添加一个函数指针，所以派生类仍仅有一个虚表指针</p>
-<h1 id="虚继承"><a href="#虚继承" class="headerlink" title="虚继承"></a>虚继承</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">class</span> A &#123;</div><div class="line"><span class="keyword">public</span>:</div><div class="line">    <span class="keyword">int</span> num;</div><div class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">fun1</span><span class="params">()</span> </span>&#123;&#125;</div><div class="line">&#125;;</div><div class="line"><span class="keyword">class</span> B:<span class="keyword">virtual</span> <span class="keyword">public</span> A&#123;</div><div class="line"><span class="keyword">public</span>:</div><div class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">fun2</span><span class="params">()</span> </span>&#123;&#125;</div><div class="line">&#125;;</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</div><div class="line">    A a;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"sizeof(a) is "</span> &lt;&lt; <span class="keyword">sizeof</span>(a) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    B b;</div><div class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">"sizeof(b) is "</span> &lt;&lt; <span class="keyword">sizeof</span>(b) &lt;&lt; <span class="built_in">endl</span>;</div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sizeof(a) is 16</div><div class="line">sizeof(b) is 24</div></pre></td></tr></table></figure>
-<p>与编译器有关，测试使用的是gcc</p>
-<p>sizeof(b) = vptr_b(8) + sizeof(a) = 24</p>
-<p>其他编译器还会有子类指向父类的指针</p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -2473,7 +2515,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-count">15</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
