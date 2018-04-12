@@ -363,6 +363,80 @@
 <li>保存用户名与密码</li>
 </ul>
 <p>第一次创建Session时，服务端会在HTTP协议中告诉客户端需要在 Cookie 里面记录一个Session ID，以后每次请求把这个会话ID发送到服务器。</p>
+<h1 id="HTTPS"><a href="#HTTPS" class="headerlink" title="HTTPS"></a>HTTPS</h1><blockquote>
+<p><a href="https://zh.wikipedia.org/wiki/%E8%B6%85%E6%96%87%E6%9C%AC%E4%BC%A0%E8%BE%93%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE" target="_blank" rel="external">https://zh.wikipedia.org/wiki/%E8%B6%85%E6%96%87%E6%9C%AC%E4%BC%A0%E8%BE%93%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE</a></p>
+</blockquote>
+<p>经由HTTP进行通信，但利用SSL/TLS来加密数据包</p>
+<p>主要目的：提供对网站服务器的身份认证，保护数据的隐私与完整性</p>
+<ul>
+<li>HTTP：默认端口80</li>
+<li>HTTPS：默认端口443</li>
+</ul>
+<blockquote>
+<p>《图解HTTP》</p>
+</blockquote>
+<p>HTTP+加密+认证+完整性保护=HTTPS</p>
+<h2 id="HTTPS采用混合加密机制"><a href="#HTTPS采用混合加密机制" class="headerlink" title="HTTPS采用混合加密机制"></a>HTTPS采用混合加密机制</h2><ol>
+<li>使用公开密钥加密方式安全地交换在稍后的共享密钥加密中要使用的密钥</li>
+<li>确保交换的密钥是安全的前提下，使用共享密钥加密方式进行通信</li>
+</ol>
+<ul>
+<li>共享密钥加密（对称密钥加密）：加密和解密通用一个密钥</li>
+<li>公开密钥加密（非对称密钥加密）：使用一堆非对称的密钥（私有密钥、公开密钥），发送密文的一方使用对方的公开密钥进行加密处理，对方收到被加密的信息后，再使用自己的私有密钥进行解密</li>
+</ul>
+<h2 id="HTTPS的安全通信机制"><a href="#HTTPS的安全通信机制" class="headerlink" title="HTTPS的安全通信机制"></a>HTTPS的安全通信机制</h2><ol>
+<li>客户端发送报文开始SSL通信，报文中包含客户端支持的SSL指定版本，加密组件（加密算法及密钥长度等）</li>
+<li>服务器端以报文作为应答，报文包含SSL版本以及加密组件；器发送证书报文，包含公开密钥证书；发送结束报文，SSL握手协商部分结束</li>
+<li>客户端以报文作为回应，包括随机密码串，已用证书中公开密钥加密；发送报文提示服务器之后通信采用密钥加密；发送结束报文，包含连接至今全部报文的整体校验值</li>
+<li>服务器端发送报文提示采用密钥加密；发送结束报文</li>
+<li>SSL连接建立完成</li>
+</ol>
+<p>服务器与客户端协商加密组件 -&gt; 服务器发送公开密钥证书 -&gt; 客户端确认证书有效性，取出公开密钥  -&gt; 客户端生成随机数，使用公开密钥对随机数进行加密处理，发送已加密的随机数 -&gt;服务器用私有密钥解密，生成随机数 </p>
+<h1 id="HTTP状态码"><a href="#HTTP状态码" class="headerlink" title="HTTP状态码"></a>HTTP状态码</h1><ul>
+<li>2XX 成功<ul>
+<li>200 OK、</li>
+<li>204 No Content</li>
+</ul>
+</li>
+<li>3XX 重定向</li>
+<li>4XX 客户端错误<ul>
+<li>400 Bad Request</li>
+<li>401 Unauthorized</li>
+<li>403 Forbidden</li>
+<li>404 Not found</li>
+</ul>
+</li>
+<li>5XX 服务器错误<ul>
+<li>500 Internal Server Error</li>
+<li>503 Service Unavailable</li>
+</ul>
+</li>
+</ul>
+<h1 id="HTTP协议"><a href="#HTTP协议" class="headerlink" title="HTTP协议"></a>HTTP协议</h1><p>HTTP是一种不保存状态，即无状态协议</p>
+<h2 id="HTTP请求报文"><a href="#HTTP请求报文" class="headerlink" title="HTTP请求报文"></a>HTTP请求报文</h2><ul>
+<li>请求行：请求方法 请求URL 协议版本</li>
+<li>请求首部字段（可选）</li>
+<li>内容实体</li>
+</ul>
+<h2 id="HTTP响应报文"><a href="#HTTP响应报文" class="headerlink" title="HTTP响应报文"></a>HTTP响应报文</h2><ul>
+<li>响应行：协议版本 状态码 状态码的原因短语</li>
+<li>响应首部字段（可选）</li>
+<li>实体主体</li>
+</ul>
+<h2 id="HTTP方法"><a href="#HTTP方法" class="headerlink" title="HTTP方法"></a>HTTP方法</h2><ul>
+<li>GET：获取资源</li>
+<li>POST：传输实体主体</li>
+<li>PUT：传输文件</li>
+<li>HEAD：获得报文首部</li>
+<li>DELETE：删除文件</li>
+<li>OPTION：询问支持的方法</li>
+<li>TRACE：追踪路径</li>
+<li>CONNECT：要求用隧道协议连接代理</li>
+</ul>
+<h1 id="HTTP-2-0"><a href="#HTTP-2-0" class="headerlink" title="HTTP/2.0"></a>HTTP/2.0</h1><p>改善用户在使用Web时的速度体验</p>
+<ul>
+<li>多路复用允许同时通过难过单一的HTTP/2.0连接发起多重的请求响应消息</li>
+</ul>
 
           
         
